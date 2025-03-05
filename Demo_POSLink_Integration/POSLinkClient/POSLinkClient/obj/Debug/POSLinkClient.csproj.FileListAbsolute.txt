@@ -24,3 +24,6 @@ D:\Demo_POSLink_Integration\POSLinkClient\POSLinkClient\obj\Debug\POSLinkClient_
 D:\Demo_POSLink_Integration\POSLinkClient\POSLinkClient\obj\Debug\POSLinkClient.g.resources
 D:\Demo_POSLink_Integration\POSLinkClient\POSLinkClient\obj\Debug\POSLinkClient.Properties.Resources.resources
 D:\Demo_POSLink_Integration\POSLinkClient\POSLinkClient\obj\Debug\POSLinkClient.csproj.GenerateResource.Cache
+D:\Demo_POSLink_Integration\Demo_POSLink_Integration\POSLinkClient\POSLinkClient\bin\Debug\POSLinkClient.exe.config
+D:\Demo_POSLink_Integration\Demo_POSLink_Integration\POSLinkClient\POSLinkClient\obj\Debug\POSLinkClient.exe
+D:\Demo_POSLink_Integration\Demo_POSLink_Integration\POSLinkClient\POSLinkClient\obj\Debug\POSLinkClient.pdb

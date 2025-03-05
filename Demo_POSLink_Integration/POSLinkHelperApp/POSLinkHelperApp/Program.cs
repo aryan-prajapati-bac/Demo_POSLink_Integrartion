@@ -36,33 +36,7 @@ namespace POSLinkHelperApp
             //string[] ports = SerialPort.GetPortNames();
             //Console.WriteLine("Available COM Ports: " + string.Join(", ", ports));
 
-            //UartSetting setting = new UartSetting() { SerialPortName = "COM3", BaudRate = 9600 };
-
-            //POSLinkSemiIntegration.Terminal terminal = poslink.GetTerminal(setting);
-
-            //POSLinkAdmin.Util.AmountRequest amountReq = new POSLinkAdmin.Util.AmountRequest() { TransactionAmount = "56780", TaxAmount = "70" };
-
-            //POSLinkSemiIntegration.Util.TraceRequest traceReq = new POSLinkSemiIntegration.Util.TraceRequest() { EcrReferenceNumber = "8" };
-
-            //POSLinkSemiIntegration.Transaction.DoCreditRequest doCreditReq = new POSLinkSemiIntegration.Transaction.DoCreditRequest
-            //{
-            //    TransactionType = POSLinkAdmin.Const.TransactionType.Sale,
-            //    AmountInformation = amountReq,
-            //    TraceInformation = traceReq
-            //};
-
-            //POSLinkSemiIntegration.Transaction.DoCreditResponse doCreditRsp;
-
-            //POSLinkAdmin.ExecutionResult executionResult = terminal.Transaction.DoCredit(doCreditReq, out doCreditRsp);
-
-            //if (executionResult.GetErrorCode() == POSLinkAdmin.ExecutionResult.Code.Ok)
-            //{
-            //    Console.WriteLine("Transaction Approved. Response Code: " + doCreditRsp.ResponseCode);
-            //}
-            //else
-            //{
-            //    Console.WriteLine("Transaction Failed. Error: " + executionResult.ToString());
-            //}
+           
             while (true)
             {
                 using (NamedPipeServerStream pipeServer = new NamedPipeServerStream("POSPipe", PipeDirection.InOut))

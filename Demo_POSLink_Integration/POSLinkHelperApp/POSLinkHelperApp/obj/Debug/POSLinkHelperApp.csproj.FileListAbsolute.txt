@@ -16,3 +16,6 @@ C:\Users\Bacancy\OneDrive\Documents\Visual Studio 2012\Projects\POSLinkHelperApp
 D:\Demo_POSLink_Integration\POSLinkHelperApp\POSLinkHelperApp\bin\Debug\POSLinkHelperApp.exe.config
 D:\Demo_POSLink_Integration\POSLinkHelperApp\POSLinkHelperApp\obj\Debug\POSLinkHelperApp.exe
 D:\Demo_POSLink_Integration\POSLinkHelperApp\POSLinkHelperApp\obj\Debug\POSLinkHelperApp.pdb
+D:\Demo_POSLink_Integration\Demo_POSLink_Integration\POSLinkHelperApp\POSLinkHelperApp\bin\Debug\POSLinkHelperApp.exe.config
+D:\Demo_POSLink_Integration\Demo_POSLink_Integration\POSLinkHelperApp\POSLinkHelperApp\obj\Debug\POSLinkHelperApp.exe
+D:\Demo_POSLink_Integration\Demo_POSLink_Integration\POSLinkHelperApp\POSLinkHelperApp\obj\Debug\POSLinkHelperApp.pdb
