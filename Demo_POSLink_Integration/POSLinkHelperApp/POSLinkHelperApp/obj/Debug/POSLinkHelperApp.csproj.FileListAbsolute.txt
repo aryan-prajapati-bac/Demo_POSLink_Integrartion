@@ -1,0 +1,18 @@
+C:\Users\Bacancy\OneDrive\Documents\Visual Studio 2012\Projects\POSLinkHelperApp\POSLinkHelperApp\bin\Debug\POSLinkHelperApp.exe
+C:\Users\Bacancy\OneDrive\Documents\Visual Studio 2012\Projects\POSLinkHelperApp\POSLinkHelperApp\bin\Debug\POSLinkAdmin.dll
+C:\Users\Bacancy\OneDrive\Documents\Visual Studio 2012\Projects\POSLinkHelperApp\POSLinkHelperApp\bin\Debug\POSLinkCore.dll
+C:\Users\Bacancy\OneDrive\Documents\Visual Studio 2012\Projects\POSLinkHelperApp\POSLinkHelperApp\bin\Debug\POSLinkSemiIntegration.dll
+C:\Users\Bacancy\OneDrive\Documents\Visual Studio 2012\Projects\POSLinkHelperApp\POSLinkHelperApp\bin\Debug\POSLinkHelperApp.exe.config
+C:\Users\Bacancy\OneDrive\Documents\Visual Studio 2012\Projects\POSLinkHelperApp\POSLinkHelperApp\bin\Debug\POSLinkUart.dll
+C:\Users\Bacancy\OneDrive\Documents\Visual Studio 2012\Projects\POSLinkHelperApp\POSLinkHelperApp\bin\Debug\Renci.SshNet.dll
+C:\Users\Bacancy\OneDrive\Documents\Visual Studio 2012\Projects\POSLinkHelperApp\POSLinkHelperApp\bin\Debug\SshNet.Security.Cryptography.dll
+C:\Users\Bacancy\OneDrive\Documents\Visual Studio 2012\Projects\POSLinkHelperApp\POSLinkHelperApp\bin\Debug\POSLinkAdmin.xml
+C:\Users\Bacancy\OneDrive\Documents\Visual Studio 2012\Projects\POSLinkHelperApp\POSLinkHelperApp\bin\Debug\POSLinkCore.xml
+C:\Users\Bacancy\OneDrive\Documents\Visual Studio 2012\Projects\POSLinkHelperApp\POSLinkHelperApp\bin\Debug\POSLinkSemiIntegration.xml
+C:\Users\Bacancy\OneDrive\Documents\Visual Studio 2012\Projects\POSLinkHelperApp\POSLinkHelperApp\obj\Debug\POSLinkHelperApp.exe
+C:\Users\Bacancy\OneDrive\Documents\Visual Studio 2012\Projects\POSLinkHelperApp\POSLinkHelperApp\obj\Debug\POSLinkHelperApp.pdb
+C:\Users\Bacancy\OneDrive\Documents\Visual Studio 2012\Projects\POSLinkHelperApp\POSLinkHelperApp\bin\Debug\POSLinkHelperApp.pdb
+C:\Users\Bacancy\OneDrive\Documents\Visual Studio 2012\Projects\POSLinkHelperApp\POSLinkHelperApp\obj\Debug\POSLinkHelperApp.csprojResolveAssemblyReference.cache
+D:\Demo_POSLink_Integration\POSLinkHelperApp\POSLinkHelperApp\bin\Debug\POSLinkHelperApp.exe.config
+D:\Demo_POSLink_Integration\POSLinkHelperApp\POSLinkHelperApp\obj\Debug\POSLinkHelperApp.exe
+D:\Demo_POSLink_Integration\POSLinkHelperApp\POSLinkHelperApp\obj\Debug\POSLinkHelperApp.pdb

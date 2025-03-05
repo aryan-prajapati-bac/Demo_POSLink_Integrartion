@@ -1,0 +1,5 @@
+[141112295]WARNING: [..\..\..\hab\simulator_Qt5\uai\suai\src\suai_system.c-0449] system_dump_modules() : prt:83 mdm:0 ped:1 eth:1 gprs:0 cdma:0 wifi:0 rf:0 icc:0 msr:1 tilt:1
+ wcdma:0 ts:1[141112298]ERROR: [..\..\..\hab\simulator_Qt5\uai\common\misc\property.cpp-0502] set_property_value() : property (cursor_y) value (108) is invalid!
+[141112302]WARNING: [..\..\..\hab\simulator_Qt5\uai\suai\src\suai_display.c-0768] init_display() : already inited
+[141112305]WARNING: [..\..\..\hab\simulator_Qt5\uai\suai\src\suai_scanner.c-0174] init_scanner() : scanner already initialized!
+
