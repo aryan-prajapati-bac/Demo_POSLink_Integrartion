@@ -97,7 +97,10 @@ namespace POSLinkClient
 
                     return response;
                 }
+
+                pipeClient.Close();
             }
+            
         }
     }
 

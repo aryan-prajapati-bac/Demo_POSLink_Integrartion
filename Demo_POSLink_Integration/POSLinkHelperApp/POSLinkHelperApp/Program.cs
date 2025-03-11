@@ -34,12 +34,12 @@ namespace POSLinkHelperApp
             Console.WriteLine(logSetting.FileName);
 
             //string[] ports = SerialPort.GetPortNames();
-            //Console.WriteLine("Available COM Ports: " + string.Join(", ", ports));
+            //Console.WriteLine("Available COM Ports: " + string.Join(", ", ports));       
 
-           
+             
             while (true)
             {
-                using (NamedPipeServerStream pipeServer = new NamedPipeServerStream("POSPipe", PipeDirection.InOut))
+                using (NamedPipeServerStream pipeServer = new NamedPipeServerStream("POSPipe", PipeDirection.InOut, 10))
                 {
                     Console.WriteLine("Waiting for connection...");
                     pipeServer.WaitForConnection();
@@ -48,11 +48,11 @@ namespace POSLinkHelperApp
                     using (StreamWriter writer = new StreamWriter(pipeServer) { AutoFlush = true })
                     {
                         string request = reader.ReadLine();
-                        UartSetting setting = new UartSetting() { SerialPortName = "COM4", BaudRate = 9600 };                       
+                        UartSetting setting = new UartSetting() { SerialPortName = "COM4", BaudRate = 9600 };
 
                         POSLinkSemiIntegration.Terminal terminal = poslink.GetTerminal(setting);
 
-                        POSLinkAdmin.Util.AmountRequest amountReq = new POSLinkAdmin.Util.AmountRequest() { TransactionAmount = request, TaxAmount = "70" };
+                        POSLinkAdmin.Util.AmountRequest amountReq = new POSLinkAdmin.Util.AmountRequest() { TransactionAmount = "29000", TaxAmount = "70" };
 
                         POSLinkSemiIntegration.Util.TraceRequest traceReq = new POSLinkSemiIntegration.Util.TraceRequest() { EcrReferenceNumber = "8" };
 
@@ -69,7 +69,7 @@ namespace POSLinkHelperApp
 
                         if (executionResult.GetErrorCode() == POSLinkAdmin.ExecutionResult.Code.Ok)
                         {
-                            Console.WriteLine("Transaction Approved. Response Code: " + doCreditRsp.ResponseCode);
+                            Console.WriteLine("Transaction Approved. " + doCreditRsp.TraceInformation.GlobalUid);
                         }
                         else
                         {
@@ -315,8 +315,4 @@ namespace POSLinkHelperApp
 //        }
 //    }
 //}
-
-   
-
-
 }

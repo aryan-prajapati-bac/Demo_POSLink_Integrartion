@@ -25,5 +25,15 @@ D:\Demo_POSLink_Integration\POSLinkClient\POSLinkClient\obj\Debug\POSLinkClient.
 D:\Demo_POSLink_Integration\POSLinkClient\POSLinkClient\obj\Debug\POSLinkClient.Properties.Resources.resources
 D:\Demo_POSLink_Integration\POSLinkClient\POSLinkClient\obj\Debug\POSLinkClient.csproj.GenerateResource.Cache
 D:\Demo_POSLink_Integration\Demo_POSLink_Integration\POSLinkClient\POSLinkClient\bin\Debug\POSLinkClient.exe.config
+D:\Demo_POSLink_Integration\Demo_POSLink_Integration\POSLinkClient\POSLinkClient\bin\Debug\POSLinkClient.exe
+D:\Demo_POSLink_Integration\Demo_POSLink_Integration\POSLinkClient\POSLinkClient\bin\Debug\POSLinkClient.pdb
+D:\Demo_POSLink_Integration\Demo_POSLink_Integration\POSLinkClient\POSLinkClient\obj\Debug\POSLinkClient.csprojResolveAssemblyReference.cache
+D:\Demo_POSLink_Integration\Demo_POSLink_Integration\POSLinkClient\POSLinkClient\obj\Debug\MainWindow.baml
+D:\Demo_POSLink_Integration\Demo_POSLink_Integration\POSLinkClient\POSLinkClient\obj\Debug\MainWindow.g.cs
+D:\Demo_POSLink_Integration\Demo_POSLink_Integration\POSLinkClient\POSLinkClient\obj\Debug\App.g.cs
+D:\Demo_POSLink_Integration\Demo_POSLink_Integration\POSLinkClient\POSLinkClient\obj\Debug\POSLinkClient_MarkupCompile.cache
+D:\Demo_POSLink_Integration\Demo_POSLink_Integration\POSLinkClient\POSLinkClient\obj\Debug\POSLinkClient.g.resources
+D:\Demo_POSLink_Integration\Demo_POSLink_Integration\POSLinkClient\POSLinkClient\obj\Debug\POSLinkClient.Properties.Resources.resources
+D:\Demo_POSLink_Integration\Demo_POSLink_Integration\POSLinkClient\POSLinkClient\obj\Debug\POSLinkClient.csproj.GenerateResource.Cache
 D:\Demo_POSLink_Integration\Demo_POSLink_Integration\POSLinkClient\POSLinkClient\obj\Debug\POSLinkClient.exe
 D:\Demo_POSLink_Integration\Demo_POSLink_Integration\POSLinkClient\POSLinkClient\obj\Debug\POSLinkClient.pdb
