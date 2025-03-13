@@ -23,14 +23,16 @@ namespace POSLinkClient
     /// </summary>
     public partial class MainWindow : Window
     {
+        private POSLinkClient1 client;
+        private static Process process;
         public MainWindow()
         {
             InitializeComponent();
-            RunHelperApp();         
+            RunHelperApp(); 
 
         }
 
-        
+
         private void ProcessPayment_Click(object sender, RoutedEventArgs e)
         {
             decimal amount;
@@ -41,6 +43,12 @@ namespace POSLinkClient
                 {
                     string result = client.SendPaymentCommand(amount);
                     ResultTextBlock.Text = result; // Display result
+
+                    if (process != null && !process.HasExited)
+                    {
+                        process.Kill(); // Sends a close request (like clicking 'X')
+                        process.WaitForExit(); // Waits for the process to exit
+                    }
                 }
                 catch (TimeoutException)
                 {
@@ -48,7 +56,7 @@ namespace POSLinkClient
                 }
                 catch (Exception ex)
                 {
-                    ResultTextBlock.Text = "An error occurred: "+ex.Message;
+                    ResultTextBlock.Text = "An error occurred: " + ex.StackTrace;
                 }
             }
             else
@@ -57,14 +65,50 @@ namespace POSLinkClient
             }
         }
 
-       
+
+        //private void ProcessPayment_Click(object sender, RoutedEventArgs e)
+        //{
+        //    decimal amount;
+        //    if (decimal.TryParse(AmountTextBox.Text, out amount))
+        //    {
+        //        try
+        //        {
+        //            string result = client.SendPaymentCommand(amount);
+        //            ResultTextBlock.Text = result; // Display result
+        //        }
+        //        catch (TimeoutException)
+        //        {
+        //            ResultTextBlock.Text = "Connection timeout with the POS Helper Service.";
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            ResultTextBlock.Text = "An error occurred: " + ex.Message;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        ResultTextBlock.Text = "Please enter a valid amount.";
+        //    }
+        //}
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            client.ClosePipe();
+            if (process != null && !process.HasExited)
+            {
+                process.CloseMainWindow(); // Sends a close request (like clicking 'X')
+                process.WaitForExit(); // Waits for the process to exit
+            }
+        }
+
+
 
         public static void RunHelperApp()
         {
             // Start the helper app as a background process
-            if (File.Exists(@"C:\Users\Bacancy\OneDrive\documents\visual studio 2012\Projects\POSLinkHelperApp\POSLinkHelperApp\bin\Debug\POSLinkHelperApp.exe"))
+            if (File.Exists(@"D:\Demo_POSLink_Integration\Demo_POSLink_Integrartion\Demo_POSLink_Integration\POSLinkHelperApp\POSLinkHelperApp\bin\Debug\POSLinkHelperApp.exe"))
             {
-                Process.Start(@"C:\Users\Bacancy\OneDrive\documents\visual studio 2012\Projects\POSLinkHelperApp\POSLinkHelperApp\bin\Debug\POSLinkHelperApp.exe");
+                process = Process.Start(@"D:\Demo_POSLink_Integration\Demo_POSLink_Integrartion\Demo_POSLink_Integration\POSLinkHelperApp\POSLinkHelperApp\bin\Debug\POSLinkHelperApp.exe");
             }
             else
             {
@@ -73,103 +117,84 @@ namespace POSLinkClient
 
         }
     }
+    //public class POSLinkClient1
+    //{
+    //    public string SendPaymentCommand(decimal amount)
+    //    {
+    //        string str = "";
+    //        using (NamedPipeClientStream pipeClient = new NamedPipeClientStream(".", "POSPipe", PipeDirection.InOut))
+    //        {
+    //            //NamedPipeClientStream pipeClient = new NamedPipeClientStream(".", "POSPipe", PipeDirection.InOut);
+    //            pipeClient.Connect(); // Set a timeout (5 seconds)
+
+    //            using (StreamWriter writer = new StreamWriter(pipeClient) { AutoFlush = true })
+    //            using (StreamReader reader = new StreamReader(pipeClient))
+    //            {
+    //                //StreamWriter writer = new StreamWriter(pipeClient) { AutoFlush = true };
+    //                //StreamReader reader = new StreamReader(pipeClient);
+    //                string command = amount.ToString();
+
+
+    //                if (!pipeClient.IsConnected)
+    //                    throw new IOException("Pipe connection was closed by the server.");
+
+
+    //                writer.WriteLine(command);
+
+    //                string response = reader.ReadLine(); // Read the response
+    //                Console.WriteLine(response);
+
+    //                if (response == null)
+    //                    throw new IOException("No response from server, pipe might be closed.");
+
+    //                str = response;
+    //            }
+
+
+    //        }
+    //        return str;
+
+    //    }
+    //}
+
+
     public class POSLinkClient1
     {
+        private NamedPipeClientStream pipeClient;
+        private StreamWriter writer;
+        private StreamReader reader;
+
+        public POSLinkClient1()
+        {
+            pipeClient = new NamedPipeClientStream(".", "POSPipe", PipeDirection.InOut);
+            pipeClient.Connect(); // Connect once and reuse
+
+            writer = new StreamWriter(pipeClient) { AutoFlush = true };
+            reader = new StreamReader(pipeClient);
+        }
+
         public string SendPaymentCommand(decimal amount)
         {
-            using (NamedPipeClientStream pipeClient = new NamedPipeClientStream(".", "POSPipe", PipeDirection.InOut))
-            {
-               pipeClient.Connect(5000); // Set a timeout (3 seconds)
+            if (!pipeClient.IsConnected)
+                throw new IOException("Pipe connection was closed by the server.");
 
-                using (StreamWriter writer = new StreamWriter(pipeClient) { AutoFlush = true })
-                using (StreamReader reader = new StreamReader(pipeClient))
-                {
-                    string command = amount+"";
-                    writer.WriteLine(command);
+            writer.WriteLine(amount.ToString());
 
-                    if (!pipeClient.IsConnected)
-                        throw new IOException("Pipe connection was closed by the server.");
+            string response = reader.ReadLine();
+            if (response == null)
+                throw new IOException("No response from server, pipe might be closed.");
 
-                    string response = reader.ReadLine(); // Read the response
-
-                    if (response == null)
-                        throw new IOException("No response from server, pipe might be closed.");
-
-                    return response;
-                }
-
-                pipeClient.Close();
-            }
-            
+            return response;
         }
-    }
 
-
-    public static class StartupManager
-{
-        public static void AddHelperAppToStartup(string appName, string pathToExe)
-    {
-        RegistryKey key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run", true);
-        if (key != null)
+        public void ClosePipe()
         {
-            key.SetValue(appName, string.Format("\"{0}\"", pathToExe)); // Add entry to run on startup
+            writer?.Dispose();
+            reader?.Dispose();
+            pipeClient?.Dispose();
         }
     }
 
-        
-
-        //public static void RunHelperApp(string helperAppPath)
-        //{
-        //    if (File.Exists(helperAppPath))
-        //    {
-        //        ProcessStartInfo startInfo = new ProcessStartInfo
-        //        {
-        //            FileName = helperAppPath,
-        //            WorkingDirectory = System.IO.Path.GetDirectoryName(helperAppPath),
-        //            UseShellExecute = false, // Allows redirection of input/output
-        //            RedirectStandardOutput = true, // To read output from the helper app
-        //            RedirectStandardInput = true,  // To send commands to the helper app
-        //            CreateNoWindow = true // Prevents opening a new window
-        //        };
-
-        //        try
-        //        {
-        //            using (Process helperApp = Process.Start(startInfo))
-        //            {
-        //                if (helperApp != null)
-        //                {
-        //                    using (StreamWriter writer = helperApp.StandardInput)
-        //                    using (StreamReader reader = helperApp.StandardOutput)
-        //                    {
-        //                        // Sending a command to the helper app
-        //                        writer.WriteLine("PAY:100");
-        //                        writer.Flush();
-
-        //                        // Reading the response from the helper app
-        //                        string response = reader.ReadLine();
-        //                        Console.WriteLine("Response from Helper App: " + response);
-        //                    }
-
-        //                    helperApp.WaitForExit();
-        //                }
-        //                else
-        //                {
-        //                    Console.WriteLine("Failed to start the helper app.");
-        //                }
-        //            }
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            Console.WriteLine("Error running helper app: " + ex.Message);
-        //        }
-        //    }
-        //    else
-        //    {
-        //        Console.WriteLine("Helper app not found at: " + helperAppPath);
-        //    }
-        //}
-
-}
     }
 
 

@@ -8,11 +8,15 @@ using System.Threading.Tasks;
 using POSLinkCore;
 using System.IO.Ports;
 using System.Threading;
+using System.Xml.Linq;
+using System.Net.Http;
+using System.Runtime.CompilerServices;
 
 namespace POSLinkHelperApp
 {
     class Program
     {
+        private static readonly string POSLinkAPIUrl = "http://poslink.com/poslink/ws/process2.asmx";
         static void Main(string[] args)
         {
 
@@ -30,13 +34,9 @@ namespace POSLinkHelperApp
             tcpSetting.Port = 10009;
             tcpSetting.Timeout = 60000;
             Console.WriteLine("Starting POSLink2 Helper Service..." +poslink);
-            Console.WriteLine(logSetting.FilePath);
-            Console.WriteLine(logSetting.FileName);
 
-            //string[] ports = SerialPort.GetPortNames();
-            //Console.WriteLine("Available COM Ports: " + string.Join(", ", ports));       
 
-             
+
             while (true)
             {
                 using (NamedPipeServerStream pipeServer = new NamedPipeServerStream("POSPipe", PipeDirection.InOut, 10))
@@ -44,15 +44,25 @@ namespace POSLinkHelperApp
                     Console.WriteLine("Waiting for connection...");
                     pipeServer.WaitForConnection();
 
+                    if (!pipeServer.IsConnected) return;
+
                     using (StreamReader reader = new StreamReader(pipeServer))
                     using (StreamWriter writer = new StreamWriter(pipeServer) { AutoFlush = true })
                     {
                         string request = reader.ReadLine();
                         UartSetting setting = new UartSetting() { SerialPortName = "COM4", BaudRate = 9600 };
 
+                        // Use if connection is being made using TCP/IP 
+                        //POSLinkCore.CommunicationSetting.TcpSetting setting1 = new POSLinkCore.CommunicationSetting.TcpSetting()
+                        //{
+                        //    Ip = await GetDeviceLocalIPAsync("token", "serialno"),
+                        //    Port = 1009,
+                        //    Timeout = 30000
+                        //};
+
                         POSLinkSemiIntegration.Terminal terminal = poslink.GetTerminal(setting);
 
-                        POSLinkAdmin.Util.AmountRequest amountReq = new POSLinkAdmin.Util.AmountRequest() { TransactionAmount = "29000", TaxAmount = "70" };
+                        POSLinkAdmin.Util.AmountRequest amountReq = new POSLinkAdmin.Util.AmountRequest() { TransactionAmount = request, TaxAmount = "70" };
 
                         POSLinkSemiIntegration.Util.TraceRequest traceReq = new POSLinkSemiIntegration.Util.TraceRequest() { EcrReferenceNumber = "8" };
 
@@ -67,46 +77,79 @@ namespace POSLinkHelperApp
 
                         POSLinkAdmin.ExecutionResult executionResult = terminal.Transaction.DoCredit(doCreditReq, out doCreditRsp);
 
+
                         if (executionResult.GetErrorCode() == POSLinkAdmin.ExecutionResult.Code.Ok)
                         {
                             Console.WriteLine("Transaction Approved. " + doCreditRsp.TraceInformation.GlobalUid);
+                            writer.WriteLine("Approved");
+
+                            // Here check doCreditRsp.HostInformation.HostResponseMessage for approval and decline
+
                         }
                         else
                         {
                             Console.WriteLine("Transaction Failed. Error: " + executionResult.ToString());
+                            writer.WriteLine("Declined");
                         }
-                        Console.WriteLine("Received: " + request);
-
-                        // Process commands
-                        string response = HandleCommand(request);
-                        writer.WriteLine(response);
 
                     }
                 }
-            }
-
-           
+            }          
 
         }
 
-        static string HandleCommand(string command)
+        public static async Task<string> GetDeviceLocalIPAsync(string token, string serialNo)
         {
-            if (command.StartsWith("PAY:"))
+            string soapRequest = $@"<?xml version=""1.0"" encoding=""utf-8""?>
+<soap12:Envelope xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" 
+                 xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" 
+                 xmlns:soap12=""http://www.w3.org/2003/05/soap-envelope"">
+    <soap12:Body>
+        <GetDeviceLocalIP xmlns=""http://poslink.com/"">
+            <Token>{token}</Token>
+            <SerialNo>{serialNo}</SerialNo>
+        </GetDeviceLocalIP>
+    </soap12:Body>
+</soap12:Envelope>";
+
+
+            using (HttpClient client = new HttpClient())
             {
-                string amountStr = command.Split(':')[1];
-                decimal amount = decimal.Parse(amountStr);
-
-                // Integrate POSLink2 SDK payment processing
-                return String.Format("Payment of {0:C} processed successfully!", amount);
+                HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, POSLinkAPIUrl)
+                {
+                    Content = new StringContent(soapRequest, Encoding.UTF8, "application/soap+xml")
+                };
+                try
+                {
+                    HttpResponseMessage response = await client.SendAsync(request);
+                    string responseXml = await response.Content.ReadAsStringAsync();
+                    return ExtractIPAddress(responseXml);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error: " + ex.Message);
+                    return null;
+                }
             }
-
-            return "Unknown command.";
         }
-
-        void MakeTransaction()
+        private static string ExtractIPAddress(string responseXml)
         {
-        
+            try
+            {
+                XDocument doc = XDocument.Parse(responseXml);
+                XNamespace ns = "http://poslink.com/";
+
+                var ipElement = doc.Descendants(ns + "IPaddress").FirstOrDefault();
+                return ipElement != null ? ipElement.Value : "IP not found";
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("XML Parsing Error: " + ex.Message);
+                return null;
+            }
         }
+
+
     }
 
 
@@ -217,102 +260,4 @@ namespace POSLinkHelperApp
             Thread.Sleep(50);//Ensure that the serial port is closed.
         }
     }
-
-
-
-
-//    class Program
-//    {
-//        static void Main(string[] args)
-//        {
-//            POSLinkSerialHandler serialHandler = new POSLinkSerialHandler();
-
-//            Console.WriteLine("Starting POSLink Helper Service...");
-
-//            while (true)
-//            {
-//                using (NamedPipeServerStream pipeServer = new NamedPipeServerStream("POSPipe", PipeDirection.InOut))
-//                {
-//                    Console.WriteLine("Waiting for connection...");
-//                    pipeServer.WaitForConnection();
-
-//                    using (StreamReader reader = new StreamReader(pipeServer))
-//                    using (StreamWriter writer = new StreamWriter(pipeServer) { AutoFlush = true })
-//                    {
-//                        string request = reader.ReadLine();
-//                        Console.WriteLine("Received: " + request);
-
-//                        string response = HandleCommand(request, serialHandler);
-//                        writer.WriteLine(response);
-//                    }
-//                }
-//            }
-//        }
-
-//        static string HandleCommand(string command, POSLinkSerialHandler serialHandler)
-//        {
-//            if (command.StartsWith("PAY:"))
-//            {
-//                string amountStr = command.Split(':')[1].Trim();
-//                decimal amount = decimal.Parse(amountStr);
-
-//                // Process payment using POSLink SDK
-//                POSLinkResponse response = serialHandler.ProcessSaleTransaction(amount);
-
-//                if (response.ResultCode == POSLinkResponse.RESP_SUCCESS)
-//                {
-//                    return $"SUCCESS|ApprovalCode:{response.ApprovalCode}|TransactionID:{response.TransactionID}";
-//                }
-//                else
-//                {
-//                    return $"FAIL|ErrorCode:{response.ResultCode}|Message:{response.ResultTxt}";
-//                }
-//            }
-
-//            return "Unknown command.";
-//        }
-//    }
-
-//    public class POSLinkSerialHandler
-//{
-//    private POSLinkCore.CommunicationSetting.TcpSetting posLink;
-
-//    public POSLinkSerialHandler()
-//    {
-//        posLink = new POSLinkCore.CommunicationSetting.TcpSetting
-//        {
-//            CommSetting = new CustomSerialCommSetting("COM3", 19200); // Replace with your port and baud rate
-//        };
-//    }
-
-//    public POSLinkResponse ProcessSaleTransaction(decimal amount)
-//    {
-//        SaleTransaction saleTransaction = new SaleTransaction
-//        {
-//            Amount = amount.ToString("F2"),
-//            TransactionType = TransactionType.SALE
-//        };
-
-//        posLink.TransactionRequest = saleTransaction;
-
-//        POSLinkResponse response = posLink.ProcessTrans();
-//        return response;
-//    }
-
-//    public void HandleResponse(POSLinkResponse response)
-//    {
-//        if (response.ResultCode == POSLinkResponse.RESP_SUCCESS)
-//        {
-//            Console.WriteLine("Transaction Approved");
-//            Console.WriteLine("Approval Code: " + response.ApprovalCode);
-//            Console.WriteLine("Transaction ID: " + response.TransactionID);
-//        }
-//        else
-//        {
-//            Console.WriteLine("Transaction Failed");
-//            Console.WriteLine("Error Code: " + response.ResultCode);
-//            Console.WriteLine("Message: " + response.ResultTxt);
-//        }
-//    }
-//}
 }
