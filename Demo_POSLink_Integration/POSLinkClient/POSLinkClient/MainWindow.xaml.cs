@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -16,6 +17,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xml.Linq;
 namespace POSLinkClient
 {
     /// <summary>
@@ -53,10 +55,20 @@ namespace POSLinkClient
                 catch (TimeoutException)
                 {
                     ResultTextBlock.Text = "Connection timeout with the POS Helper Service.";
+                    if (process != null && !process.HasExited)
+                    {
+                        process.Kill(); // Sends a close request (like clicking 'X')
+                        process.WaitForExit(); // Waits for the process to exit
+                    }
                 }
                 catch (Exception ex)
                 {
                     ResultTextBlock.Text = "An error occurred: " + ex.StackTrace;
+                    if (process != null && !process.HasExited)
+                    {
+                        process.Kill(); // Sends a close request (like clicking 'X')
+                        process.WaitForExit(); // Waits for the process to exit
+                    }
                 }
             }
             else
@@ -179,12 +191,43 @@ namespace POSLinkClient
                 throw new IOException("Pipe connection was closed by the server.");
 
             writer.WriteLine(amount.ToString());
+            writer.WriteLine("3456");
 
-            string response = reader.ReadLine();
-            if (response == null)
-                throw new IOException("No response from server, pipe might be closed.");
+            //string response = reader.ReadLine();
 
-            return response;
+            //if (response == null)
+            //    throw new IOException("No response from server, pipe might be closed.");
+
+
+            string jsonResponse = reader.ReadLine();
+
+            // Check if response is valid JSON
+            if (IsJsonObject(jsonResponse))
+            {
+                JObject transaction = JObject.Parse(jsonResponse);
+
+                Console.WriteLine("Transaction Received:");
+                foreach (var property in transaction.Properties())
+                {
+                    Console.WriteLine($"{property.Name}: {property.Value}");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Server response is not a valid JSON object.");
+                Console.WriteLine($"Raw Response: {jsonResponse}");
+            }
+
+            return jsonResponse;
+        }
+
+        static bool IsJsonObject(string input)
+        {
+            if (string.IsNullOrWhiteSpace(input))
+                return false;
+
+            input = input.Trim();
+            return input.StartsWith("{") && input.EndsWith("}");
         }
 
         public void ClosePipe()

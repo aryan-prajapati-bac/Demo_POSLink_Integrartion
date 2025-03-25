@@ -8,6 +8,9 @@
     },
     {
       "AbsoluteMoniker": "D:0:0:{00000000-0000-0000-0000-000000000000}|\u003CSolution\u003E|POSLinkHelperApp||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B29A3E58-C547-4235-8E3F-C3F808C1E887}|POSLinkHelperApp\\POSLinkHelperApp.csproj|d:\\demo_poslink_integration\\demo_poslink_integrartion\\demo_poslink_integration\\poslinkhelperapp\\poslinkhelperapp\\||{B270807C-D8C6-49EB-8EBE-8E8D566637A1}|5e9a8ac2-4f34-4521-858f-4c248ba31532"
     }
   ],
   "DocumentGroupContainers": [
@@ -28,7 +31,8 @@
               "ToolTip": "D:\\Demo_POSLink_Integration\\Demo_POSLink_Integrartion\\Demo_POSLink_Integration\\POSLinkHelperApp\\POSLinkHelperApp\\POSLinkHelperApp.csproj",
               "RelativeToolTip": "POSLinkHelperApp\\POSLinkHelperApp.csproj",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2025-03-11T09:26:23.129Z"
+              "WhenOpened": "2025-03-11T09:26:23.129Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -38,7 +42,7 @@
               "RelativeDocumentMoniker": "POSLinkHelperApp\\Program.cs",
               "ToolTip": "D:\\Demo_POSLink_Integration\\Demo_POSLink_Integrartion\\Demo_POSLink_Integration\\POSLinkHelperApp\\POSLinkHelperApp\\Program.cs",
               "RelativeToolTip": "POSLinkHelperApp\\Program.cs",
-              "ViewState": "AgIAAGAAAAAAAAAAAAAkwHMAAAAUAAAAAAAAAA==",
+              "ViewState": "AgIAAFkAAAAAAAAAAAAowIAAAAAjAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-03-11T05:12:48.429Z",
               "EditorCaption": ""

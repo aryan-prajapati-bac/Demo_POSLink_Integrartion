@@ -1,0 +1,32 @@
+
+[2025-03-18 12:25:15.346]DEBUG: [ 1 ][CustomerComm]----------------------------Start---------------------------
+[2025-03-18 12:25:15.347]DEBUG: [ 1 ][CustomerComm]POSLink dll version: V2.01.00
+[2025-03-18 12:25:15.347]DEBUG: [ 1 ][CustomerComm]Timeout: 0
+[2025-03-18 12:25:15.350]DEBUG: [ 1 ][CustomerComm]Send Message =[02]A00[1c]1.64[03]C
+[2025-03-18 12:25:15.350]DEBUG: [ 1 ][CustomerComm]================Start Communication================
+[2025-03-18 12:25:15.357]DEBUG: [ 1 ][CustomerComm]Send Message =<Masked Data>
+[2025-03-18 12:25:18.677]DEBUG: [ 1 ][CustomerComm]Receive Message =[06]
+[2025-03-18 12:25:18.796]DEBUG: [ 1 ][CustomerComm]Receive Message =<Masked Data>
+[2025-03-18 12:25:18.796]DEBUG: [ 1 ][CustomerComm]Send Message =[06]
+[2025-03-18 12:25:18.798]DEBUG: [ 1 ][CustomerComm]Receive Message =[04]
+[2025-03-18 12:25:18.864]DEBUG: [ 1 ][CustomerComm]================End Communication==================
+[2025-03-18 12:25:18.864]DEBUG: [ 1 ][CustomerComm]Receive Message =[02]0[1c]A01[1c]1.40[1c]000000[1c]OK[1c]87654321[1c]S300[1c]1.1.1.0[1c]0000000000000000000000000000000000[1c]9[1c]18[1c]APPVERSION=[1f]APPNAME=[03]E
+[2025-03-18 12:25:18.864]DEBUG: [ 1 ][CustomerComm]Process Success
+[2025-03-18 12:25:18.866]DEBUG: [ 1 ][CustomerComm]----------------------------End---------------------------
+[2025-03-18 12:25:18.870]DEBUG: [ 1 ][CustomerComm]Handshake succeeded.
+
+[2025-03-18 12:27:31.596]DEBUG: [ 1 ][CustomerComm]----------------------------Start---------------------------
+[2025-03-18 12:27:31.596]DEBUG: [ 1 ][CustomerComm]POSLink dll version: V2.01.00
+[2025-03-18 12:27:31.596]DEBUG: [ 1 ][CustomerComm]Timeout: 0
+[2025-03-18 12:27:31.606]DEBUG: [ 1 ][CustomerComm]Send Message =[02]A00[1c]1.64[03]C
+[2025-03-18 12:27:31.608]DEBUG: [ 1 ][CustomerComm]================Start Communication================
+[2025-03-18 12:27:31.644]DEBUG: [ 1 ][CustomerComm]Send Message =<Masked Data>
+[2025-03-18 12:27:31.728]DEBUG: [ 1 ][CustomerComm]Receive Message =[06]
+[2025-03-18 12:27:31.853]DEBUG: [ 1 ][CustomerComm]Receive Message =<Masked Data>
+[2025-03-18 12:27:31.853]DEBUG: [ 1 ][CustomerComm]Send Message =[06]
+[2025-03-18 12:27:31.853]DEBUG: [ 1 ][CustomerComm]Receive Message =[04]
+[2025-03-18 12:27:31.914]DEBUG: [ 1 ][CustomerComm]================End Communication==================
+[2025-03-18 12:27:31.914]DEBUG: [ 1 ][CustomerComm]Receive Message =[02]0[1c]A01[1c]1.40[1c]000000[1c]OK[1c]87654321[1c]S300[1c]1.1.1.0[1c]0000000000000000000000000000000000[1c]9[1c]18[1c]APPVERSION=[1f]APPNAME=[03]E
+[2025-03-18 12:27:31.914]DEBUG: [ 1 ][CustomerComm]Process Success
+[2025-03-18 12:27:31.914]DEBUG: [ 1 ][CustomerComm]----------------------------End---------------------------
+[2025-03-18 12:27:31.922]DEBUG: [ 1 ][CustomerComm]Handshake succeeded.
