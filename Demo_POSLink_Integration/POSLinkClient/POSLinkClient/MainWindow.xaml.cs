@@ -199,7 +199,7 @@ namespace POSLinkClient
             //    throw new IOException("No response from server, pipe might be closed.");
 
 
-            string jsonResponse = reader.ReadLine();
+            string jsonResponse = reader.ReadToEnd();
 
             // Check if response is valid JSON
             if (IsJsonObject(jsonResponse))
@@ -209,13 +209,13 @@ namespace POSLinkClient
                 Console.WriteLine("Transaction Received:");
                 foreach (var property in transaction.Properties())
                 {
-                    Console.WriteLine($"{property.Name}: {property.Value}");
+                    Console.WriteLine(string.Format("{0}: {1}", property.Name, property.Value));
                 }
             }
             else
             {
                 Console.WriteLine("Server response is not a valid JSON object.");
-                Console.WriteLine($"Raw Response: {jsonResponse}");
+                Console.WriteLine("Raw Response: " + jsonResponse);
             }
 
             return jsonResponse;
@@ -232,9 +232,9 @@ namespace POSLinkClient
 
         public void ClosePipe()
         {
-            writer?.Dispose();
-            reader?.Dispose();
-            pipeClient?.Dispose();
+            if (writer != null) writer.Dispose();
+            if (reader != null) reader.Dispose();
+            if (pipeClient != null) pipeClient.Dispose();
         }
     }
 

@@ -18,6 +18,9 @@ using POSLinkSemiIntegration;
 using System.Xml;
 using Newtonsoft.Json;
 using POSLinkAdmin.Device;
+using POSLinkAdmin.Form;
+using POSLinkAdmin.Util;
+using POSLinkCore.CommunicationSetting;
 
 
 namespace POSLinkHelperApp
@@ -25,7 +28,12 @@ namespace POSLinkHelperApp
     class Program
     {
         private static readonly string POSLinkAPIUrl = "http://poslink.com/poslink/ws/process2.asmx";
-        static async Task Main(string[] args)
+
+        static void Main(string[] args)
+        {
+            MainAsync().GetAwaiter().GetResult();
+        }
+        static async Task MainAsync()
         {
 
             POSLinkSemiIntegration.POSLinkSemi poslink = POSLinkSemiIntegration.POSLinkSemi.GetPOSLinkSemi();
@@ -35,97 +43,51 @@ namespace POSLinkHelperApp
             logSetting.Days = 30;
             logSetting.FilePath = ".\\";
             poslink.SetLogSetting(logSetting);
+           
 
-
-            //POSLinkCore.CommunicationSetting.TcpSetting tcpSetting = new POSLinkCore.CommunicationSetting.TcpSetting();
-            //tcpSetting.Ip = "192.168.3.219";
-            //tcpSetting.Ip = "172.20.10.2";
-            //tcpSetting.Port = 10009;
-            //tcpSetting.Timeout = 60000;
-            //Console.WriteLine("Starting POSLink2 Helper Service..." + poslink);
-
+            // For UART 
             //UartSetting setting = new UartSetting() { SerialPortName = "COM4", BaudRate = 9600 };
-            //POSLinkSemiIntegration.Terminal terminal = poslink.GetTerminal(setting);
-            //POSLinkAdmin.Form.ShowItemRequest itemDetails = new POSLinkAdmin.Form.ShowItemRequest() { Title = "Item" };
-            //POSLinkAdmin.Form.ShowDialogRequest req = new POSLinkAdmin.Form.ShowDialogRequest() { Title="item",Button1=new POSLinkAdmin.Util.SdButton()};
 
-            // Use if connection is being made using TCP/IP 
+
+            // For TCP/IP
             //POSLinkCore.CommunicationSetting.TcpSetting setting1 = new POSLinkCore.CommunicationSetting.TcpSetting()
             //{
             //    Ip = await GetDeviceLocalIPAsync("1851761554", "E3NX2QRE"),
             //    Port = 10009,
             //    Timeout = 30000
             //};
-            //POSLinkSemiIntegration.Terminal terminal = poslink.GetTerminal(tcpSetting);
-            //Console.WriteLine("Connected");
 
+            //POSLinkSemiIntegration.Terminal terminal = poslink.GetTerminal(setting1);
 
-            /////////////////////////// native code to check device connection
-            //string ipAddress = "172.20.10.2"; // Terminal IP
-            //int port = 10009; // Terminal Port
+            //POSLinkAdmin.Util.AmountRequest amountReq = new POSLinkAdmin.Util.AmountRequest() { TransactionAmount = "300", TaxAmount = "70" };
 
-            //try
+            //POSLinkSemiIntegration.Util.TraceRequest traceReq = new POSLinkSemiIntegration.Util.TraceRequest() { EcrReferenceNumber = "8" };
+
+            //POSLinkSemiIntegration.Transaction.DoCreditRequest doCreditReq = new POSLinkSemiIntegration.Transaction.DoCreditRequest
             //{
-            //    using (TcpClient client = new TcpClient())
-            //    {
-            //        Console.WriteLine($"Connecting to {ipAddress}:{port}...");
+            //    TransactionType = POSLinkAdmin.Const.TransactionType.Sale,
+            //    AmountInformation = amountReq,
+            //    TraceInformation = traceReq
+            //};
 
-            //        // Connect to the terminal
-            //        await client.ConnectAsync(ipAddress, port);
-            //        Console.WriteLine("Connected!");
-
-            //        NetworkStream stream = client.GetStream();
-
-            //        // Sending a request (example data, adjust as per your requirement)
-            //        string request = "Hello, Terminal!";
-            //        byte[] requestData = Encoding.ASCII.GetBytes(request);
-            //        await stream.WriteAsync(requestData, 0, requestData.Length);
-            //        Console.WriteLine($"Sent: {request}");
-
-            //        // Receiving response
-            //        byte[] responseData = new byte[1024];
-            //        int bytesRead = await stream.ReadAsync(responseData, 0, responseData.Length);
-            //        string response = Encoding.ASCII.GetString(responseData, 0, bytesRead);
-            //        Console.WriteLine($"Received: {response}");
-
-            //        // Close connection
-            //        stream.Close();
-            //        client.Close();
-            //    }
+            //POSLinkSemiIntegration.Transaction.DoCreditResponse doCreditRsp;
+            //try {
+            //    POSLinkAdmin.ExecutionResult executionResult = terminal.Transaction.DoCredit(doCreditReq, out doCreditRsp);         
             //}
             //catch (Exception ex)
             //{
-            //    Console.WriteLine($"Error: {ex.Message}");
+
+            //    TransactionLog errorResponse = new TransactionLog()
+            //    {
+            //        DateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+            //        Success = false,
+            //        Message = ex.Message,
+            //    };
+
+            //    string jsonErrorResponse = JsonConvert.SerializeObject(errorResponse, Newtonsoft.Json.Formatting.Indented);
             //}
 
 
-
-
-
-
-            POSLinkCore.CommunicationSetting.TcpSetting setting1 = new POSLinkCore.CommunicationSetting.TcpSetting()
-            {
-                Ip = await GetDeviceLocalIPAsync("1851761554", "E3NX2QRE"),
-                Port = 10009,
-                Timeout = 30000
-            };
-
-            POSLinkSemiIntegration.Terminal terminal = poslink.GetTerminal(setting1);
-
-            POSLinkAdmin.Util.AmountRequest amountReq = new POSLinkAdmin.Util.AmountRequest() { TransactionAmount = "300", TaxAmount = "70" };
-
-            POSLinkSemiIntegration.Util.TraceRequest traceReq = new POSLinkSemiIntegration.Util.TraceRequest() { EcrReferenceNumber = "8" };
-
-            POSLinkSemiIntegration.Transaction.DoCreditRequest doCreditReq = new POSLinkSemiIntegration.Transaction.DoCreditRequest
-            {
-                TransactionType = POSLinkAdmin.Const.TransactionType.Sale,
-                AmountInformation = amountReq,
-                TraceInformation = traceReq
-            };
-            //POSLinkAdmin.Form.ShowItemRequest itemDetails = new POSLinkAdmin.Form.ShowItemRequest() { Title = "300" };
-            POSLinkAdmin.Form.ShowDialogRequest dialogue = new POSLinkAdmin.Form.ShowDialogRequest() { Title = "choose", Button1 = new POSLinkAdmin.Util.SdButton() { Name = "credit" }, Button2 = new POSLinkAdmin.Util.SdButton() { Name = "debit" } };
-            POSLinkSemiIntegration.Transaction.DoCreditResponse doCreditRsp;
-            POSLinkAdmin.ExecutionResult executionResult = terminal.Transaction.DoCredit(doCreditReq, out doCreditRsp);
             //if (executionResult.GetErrorCode() == POSLinkAdmin.ExecutionResult.Code.Ok)
             //{
             //    Console.WriteLine("Transaction Approved. " + doCreditRsp.TraceInformation.GlobalUid);
@@ -160,73 +122,57 @@ namespace POSLinkHelperApp
                         try             
                         
                             {
-                                 //UartSetting setting = new UartSetting() { SerialPortName = "COM4", BaudRate = 9600 };
+                            //UartSetting setting = new UartSetting() { SerialPortName = "COM4", BaudRate = 9600 };
 
                             // Use if connection is being made using TCP/IP 
-                            //POSLinkCore.CommunicationSetting.TcpSetting setting1 = new POSLinkCore.CommunicationSetting.TcpSetting()
-                            //{
-                            //    Ip = await GetDeviceLocalIPAsync("1851761554", "E3NX2QRE"),
-                            //    Port = 10009,
-                            //    Timeout = 30000
-                            //};
+                                POSLinkCore.CommunicationSetting.TcpSetting setting1 = new POSLinkCore.CommunicationSetting.TcpSetting()
+                                {
+                                    Ip = await GetDeviceLocalIPAsync("1851761554", "E3NX2QRE"),
+                                    Port = 10009,
+                                    Timeout = 30000
+                                };
 
-                            //POSLinkSemiIntegration.Terminal terminal = poslink.GetTerminal(setting1);
+                                POSLinkSemiIntegration.Terminal terminal = poslink.GetTerminal(setting1);
+                                
 
-                            //POSLinkAdmin.Util.AmountRequest amountReq = new POSLinkAdmin.Util.AmountRequest() { TransactionAmount = amount, TaxAmount = "70" };
+                                POSLinkAdmin.Util.AmountRequest amountReq = new POSLinkAdmin.Util.AmountRequest() { TransactionAmount = amount, TaxAmount = "70" };
 
-                            //POSLinkSemiIntegration.Util.TraceRequest traceReq = new POSLinkSemiIntegration.Util.TraceRequest() { EcrReferenceNumber = "8" };
+                                POSLinkSemiIntegration.Util.TraceRequest traceReq = new POSLinkSemiIntegration.Util.TraceRequest() { EcrReferenceNumber = "8" };
 
-                            //POSLinkSemiIntegration.Transaction.DoCreditRequest doCreditReq = new POSLinkSemiIntegration.Transaction.DoCreditRequest
-                            //{
-                            //    TransactionType = POSLinkAdmin.Const.TransactionType.Sale,
-                            //    AmountInformation = amountReq,
-                            //    TraceInformation = traceReq
-                            //};
+                                POSLinkSemiIntegration.Transaction.DoCreditRequest doCreditReq = new POSLinkSemiIntegration.Transaction.DoCreditRequest
+                                {
+                                    TransactionType = POSLinkAdmin.Const.TransactionType.Sale,
+                                    AmountInformation = amountReq,
+                                    TraceInformation = traceReq
+                                };
 
-                            //POSLinkSemiIntegration.Transaction.DoCreditResponse doCreditRsp;
+                                POSLinkSemiIntegration.Transaction.DoCreditResponse doCreditRsp;
 
-                            //POSLinkAdmin.Form.ShowItemRequest itemDetails = new POSLinkAdmin.Form.ShowItemRequest() { Title = amount };
-                            ////writer.WriteLine("Approved");
-
-                            //POSLinkAdmin.ExecutionResult executionResult = terminal.Transaction.DoCredit(doCreditReq, out doCreditRsp);
+                                POSLinkAdmin.ExecutionResult executionResult = terminal.Transaction.DoCredit(doCreditReq, out doCreditRsp);
 
 
-                            //if (executionResult.GetErrorCode() == POSLinkAdmin.ExecutionResult.Code.Ok)
-                            //{
-                            //    Console.WriteLine("Transaction Approved. " + doCreditRsp.TraceInformation.GlobalUid);
-                            //    writer.WriteLine("Approved");
+                                TransactionLog transactionLog = new TransactionLog()
+                                {
+                                    DateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+                                    Amount = amount,
+                                    OrderID = orderID,
+                                    TransactionType = (doCreditRsp != null && doCreditRsp.EdcType != null) ? doCreditRsp.EdcType : "Unknown",
+                                    TransactionID = (doCreditRsp != null && doCreditRsp.TraceInformation != null) ? doCreditRsp.TraceInformation.GlobalUid : null,
+                                    Success = (executionResult.GetErrorCode() == ExecutionResult.Code.Ok),
+                                    Code = (doCreditRsp != null && doCreditRsp.HostInformation != null) ? doCreditRsp.HostInformation.HostResponseCode : "N/A",
+                                    Message = (doCreditRsp != null && doCreditRsp.HostInformation != null) ? doCreditRsp.HostInformation.HostResponseMessage : "N/A"
+                                };
 
-                            //    // Here check doCreditRsp.HostInformation.HostResponseMessage for approval and decline
+                                string jsonResponse = JsonConvert.SerializeObject(transactionLog, Newtonsoft.Json.Formatting.Indented);
 
-                            //}
-                            //else
-                            //{
-                            //    Console.WriteLine("Transaction Failed. Error: " + executionResult.ToString());
-                            //    writer.WriteLine("Declined");
-                            //}
-
-                            //TransactionLog transactionLog = new TransactionLog()
-                            //{
-                            //    DateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
-                            //    Amount = amount,
-                            //    OrderID = orderID,
-                            //    TransactionType = doCreditRsp?.EdcType ?? "Unknown",
-                            //    TransactionID = doCreditRsp.TraceInformation.GlobalUid,
-                            //    Success = executionResult.GetErrorCode() == ExecutionResult.Code.Ok,
-                            //    SuccessCode = doCreditRsp?.HostInformation?.HostResponseCode ?? "N/A",
-                            //    Message = doCreditRsp?.HostInformation?.HostResponseMessage ?? "N/A",
-                            //    ErrorCode = executionResult.GetErrorCode().ToString(),
-                            //};
-
-                            //string jsonResponse = JsonConvert.SerializeObject(transactionLog, Newtonsoft.Json.Formatting.Indented);
-
-                            // Send the entire JSON object to the main application
-                            //writer.WriteLine(jsonResponse);
+                             //Send the entire JSON object to the main application
+                             writer.WriteLine(jsonResponse);
                             //LogTransaction(transactionLog);
 
-                        } 
-                        
-                        catch(Exception ex) {
+                            }
+
+                        catch (Exception ex)
+                        {
 
                             TransactionLog errorResponse = new TransactionLog()
                             {
@@ -237,9 +183,9 @@ namespace POSLinkHelperApp
 
                             string jsonErrorResponse = JsonConvert.SerializeObject(errorResponse, Newtonsoft.Json.Formatting.Indented);
                             writer.WriteLine(jsonErrorResponse);
-
+                            LogTransaction(errorResponse);
                         }
-                           
+
                         }
                     }
                 
@@ -251,17 +197,28 @@ namespace POSLinkHelperApp
 
         public static async Task<string> GetDeviceLocalIPAsync(string serialNo,string terminalId)
         {
-            string soapRequest = $@"<?xml version=""1.0"" encoding=""utf-8""?>
-            <soap12:Envelope xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" 
-                             xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" 
-                             xmlns:soap12=""http://www.w3.org/2003/05/soap-envelope"">
-                <soap12:Body>
-                    <GetDeviceLocalIP xmlns=""http://poslink.com/"">
-                      <TerminalId>{terminalId}</TerminalId>
-                        <SerialNo>{serialNo}</SerialNo>
-                    </GetDeviceLocalIP>
-                </soap12:Body>
-            </soap12:Envelope>";
+            //string soapRequest = $@"<?xml version=""1.0"" encoding=""utf-8""?>
+            //<soap12:Envelope xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" 
+            //                 xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" 
+            //                 xmlns:soap12=""http://www.w3.org/2003/05/soap-envelope"">
+            //    <soap12:Body>
+            //        <GetDeviceLocalIP xmlns=""http://poslink.com/"">
+            //          <TerminalId>{terminalId}</TerminalId>
+            //            <SerialNo>{serialNo}</SerialNo>
+            //        </GetDeviceLocalIP>
+            //    </soap12:Body>
+            //</soap12:Envelope>";
+            string soapRequest = string.Format(@"<?xml version=""1.0"" encoding=""utf-8""?>
+        <soap12:Envelope xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" 
+                         xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" 
+                         xmlns:soap12=""http://www.w3.org/2003/05/soap-envelope"">
+            <soap12:Body>
+                <GetDeviceLocalIP xmlns=""http://poslink.com/"">
+                  <TerminalId>{0}</TerminalId>
+                  <SerialNo>{1}</SerialNo>
+                </GetDeviceLocalIP>
+            </soap12:Body>
+        </soap12:Envelope>", terminalId, serialNo);
 
 
             using (HttpClient client = new HttpClient())
@@ -334,6 +291,8 @@ namespace POSLinkHelperApp
 
 
         }
+
+      
         private static string ExtractIPAddress(string responseXml)
         {
             try
@@ -367,7 +326,10 @@ namespace POSLinkHelperApp
                 }
 
                 // Format data in a structured manner (ensuring fixed column widths)
-                string logEntry = $"{transactionLog.DateTime,-20} || {transactionLog.TransactionID,-14} || {transactionLog.OrderID,-8} || {transactionLog.Amount,-7} || {transactionLog.TransactionType,-16} || {transactionLog.Success,-7} || {transactionLog.SuccessCode,-5} || {transactionLog.Message,-20} || {transactionLog.ErrorCode,-8}";
+                //string logEntry = $"{transactionLog.DateTime,-20} || {transactionLog.TransactionID,-14} || {transactionLog.OrderID,-8} || {transactionLog.Amount,-7} || {transactionLog.TransactionType,-16} || {transactionLog.Success,-7} || {transactionLog.Code,-5} || {transactionLog.Message,-20}";
+                string logEntry = string.Format("{0,-20} || {1,-14} || {2,-8} || {3,-7} || {4,-16} || {5,-7} || {6,-5} || {7,-20}",
+               transactionLog.DateTime, transactionLog.TransactionID, transactionLog.OrderID, transactionLog.Amount,
+               transactionLog.TransactionType, transactionLog.Success, transactionLog.Code, transactionLog.Message);
 
                 // Append log entry to file
                 using (StreamWriter writer = new StreamWriter(logPath, true))
@@ -504,9 +466,8 @@ namespace POSLinkHelperApp
         public string Amount { get; set; }
         public string TransactionType { get; set; }
         public bool Success { get; set; }
-        public string SuccessCode { get; set; }
+        public string Code { get; set; }
         public string Message { get; set; }
-        public string ErrorCode { get; set; }
        
     }
 }
