@@ -67,8 +67,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DeviceNetworkHelper.cs" />
+    <Compile Include="ErrorMessageProvider.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RegistryHelper.cs" />
+    <Compile Include="TransactionLog.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

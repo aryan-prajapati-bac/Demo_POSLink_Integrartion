@@ -191,7 +191,7 @@ namespace POSLinkClient
                 throw new IOException("Pipe connection was closed by the server.");
 
             writer.WriteLine(amount.ToString());
-            writer.WriteLine("3456");
+            writer.WriteLine("444");
 
             //string response = reader.ReadLine();
 
