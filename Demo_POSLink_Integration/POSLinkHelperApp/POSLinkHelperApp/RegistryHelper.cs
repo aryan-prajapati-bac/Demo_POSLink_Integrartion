@@ -1,7 +1,10 @@
 ﻿using Microsoft.Win32;
+using SshNet.Security.Cryptography;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,14 +18,16 @@ namespace POSLinkHelperApp
             {
                 if (key != null)
                 {
+                    CryptoHelper crypto = new CryptoHelper();
                     object value = key.GetValue(valueName);
-                    return value != null ? value.ToString() : "Value not found";
+                    return value != null ? crypto.Decrypt3DES(value.ToString()) : "Value not found";
                 }
                 else
                 {
                     return "Registry Key not found";
                 }
             }
-        }
+        }          
+
     }
 }

@@ -26,3 +26,27 @@ Time                 || Transaction ID   || Order ID  || Amount  || Transaction 
 2025-03-28 15:57:32  || 1851761554202503281557129075 || 444      || 2.3     || Unknown              || No      || 0     || DEMO APPROVED       
 2025-03-28 16:00:39  || 1851761554202503281600228055 || 444      || 3       || Unknown              || Yes     || 0     || DEMO APPROVED       
 2025-03-28 16:04:19  || 1851761554202503281604036080 || 444      || 4       || Credit               || Yes     || 0     || DEMO APPROVED       
+2025-03-28 20:27:10  || 1851761554202503282026490855 || 444      || 200     || Credit               || Yes     || 0     || DEMO APPROVED       
+2025-03-28 21:19:47  || 1851761554202503282026490855 || 444      || 200     || Credit               || No      || 100011 || DUP TRANSACTION     
+2025-03-28 21:20:18  || 1851761554202503282120017707 || 444      || 12      || Credit               || Yes     || 0     || DEMO APPROVED       
+2025-03-28 21:25:08  || N/A              || 444      || 125441  || Unknown              || No      || 100002 || ABORTED             
+2025-03-30 20:56:24  || N/A              || N/A      || 0.00    || Unknown              || No      || NullReferenceException || Terminal not found  
+2025-03-30 20:57:47  || N/A              || N/A      || 0.00    || Unknown              || No      || NullReferenceException || Terminal not found  
+2025-03-30 20:58:54  || N/A              || N/A      || 0.00    || Unknown              || No      || NullReferenceException || Terminal not found  
+2025-03-30 21:00:47  || 1851761554202503302100234150 || 444      || 10      || Credit               || No      || 101401 || CHIP READ FAILED    
+2025-03-30 21:01:16  || 1851761554202503302101036157 || 444      || 10      || Credit               || No      || 101401 || CHIP READ FAILED    
+2025-03-30 21:02:01  || N/A              || 444      || 1       || Unknown              || No      || RecvDataTimeout || ECR receive data timeout
+2025-03-30 21:04:08  || N/A              || N/A      || 0.00    || Unknown              || No      || NullReferenceException || Terminal not found  
+2025-03-31 10:27:37  || 1851761554202503302101296480 || 444      || 1       || Credit               || No      || 100011 || DUP TRANSACTION     
+2025-03-31 10:28:07  || 1851761554202503311027518876 || 444      || 2       || Credit               || Yes     || 0     || DEMO APPROVED       
+2025-03-31 10:28:51  || 1851761554202503311028344901 || 444      || 3       || Credit               || Yes     || 0     || DEMO APPROVED       
+2025-03-31 10:35:29  || 1851761554202503311035127145 || 444      || 1.5     || Credit               || Yes     || 0     || DEMO APPROVED       
+2025-03-31 15:07:11  || N/A              || 444      || 5       || Unknown              || No      || 100002 || ABORTED             
+2025-03-31 15:50:16  || N/A              || 444      || 1       || Unknown              || No      || 100002 || ABORTED             
+2025-03-31 15:50:32  || N/A              || 444      || 1       || Unknown              || No      || N/A   || N/A                 
+2025-03-31 15:56:24  || N/A              || 444      || 1       || Unknown              || No      || 100002 || ABORTED             
+2025-03-31 15:56:40  || N/A              || 444      || 2       || Unknown              || No      || N/A   || N/A                 
+2025-03-31 17:26:00  || 1851761554202503311725325914 || 444      || 1       || Credit               || Yes     || 0     || DEMO APPROVED       
+                     || N/A              || N/A      || 0.00    || Unknown              || No      || N/A   || N/A                 
+                     || N/A              || N/A      || 0.00    || Unknown              || No      || N/A   || N/A                 
+                     || N/A              || N/A      || 0.00    || Unknown              || Yes     || N/A   || N/A                 

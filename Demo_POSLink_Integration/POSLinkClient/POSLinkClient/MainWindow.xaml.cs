@@ -35,7 +35,7 @@ namespace POSLinkClient
         }
 
 
-        private void ProcessPayment_Click(object sender, RoutedEventArgs e)
+        private void ProcessPayment_Click(object sender, RoutedEventArgs e)         
         {
             decimal amount;
             if (decimal.TryParse(AmountTextBox.Text, out amount))
@@ -118,9 +118,9 @@ namespace POSLinkClient
         public static void RunHelperApp()
         {
             // Start the helper app as a background process
-            if (File.Exists(@"D:\Demo_POSLink_Integration\Demo_POSLink_Integrartion\Demo_POSLink_Integration\POSLinkHelperApp\POSLinkHelperApp\bin\Debug\POSLinkHelperApp.exe"))
+            if (File.Exists(@"D:\Demo_POSLink_Integration\Demo_POSLink_Integrartion\Demo_POSLink_Integration\POSLinkClient\POSLinkClient\bin\Debug\POSLinkHelperApp.exe"))
             {
-                process = Process.Start(@"D:\Demo_POSLink_Integration\Demo_POSLink_Integrartion\Demo_POSLink_Integration\POSLinkHelperApp\POSLinkHelperApp\bin\Debug\POSLinkHelperApp.exe");
+                process = Process.Start(@"D:\Demo_POSLink_Integration\Demo_POSLink_Integrartion\Demo_POSLink_Integration\POSLinkClient\POSLinkClient\bin\Debug\POSLinkHelperApp.exe");
             }
             else
             {
@@ -202,7 +202,7 @@ namespace POSLinkClient
             string jsonResponse = reader.ReadToEnd();
 
             // Check if response is valid JSON
-            if (IsJsonObject(jsonResponse))
+             if (IsJsonObject(jsonResponse))
             {
                 JObject transaction = JObject.Parse(jsonResponse);
 

@@ -221,24 +221,24 @@
 //        </soap12:Envelope>", terminalId, serialNo);
 
 
-//            using (HttpClient client = new HttpClient())
-//            {
-//                HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, POSLinkAPIUrl)
-//                {
-//                    Content = new StringContent(soapRequest, Encoding.UTF8, "application/soap+xml")
-//                };
-//                try
-//                {
-//                    HttpResponseMessage response = await client.SendAsync(request);
-//                    string responseXml = await response.Content.ReadAsStringAsync();
-//                    return ExtractIPAddress(responseXml);
-//                }
-//                catch (Exception ex)
-//                {
-//                    Console.WriteLine("Error: " + ex.Message);
-//                    return null;
-//                }
-//            }
+            //using (HttpClient client = new HttpClient())
+            //{
+            //    HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, POSLinkAPIUrl)
+            //    {
+            //        Content = new StringContent(soapRequest, Encoding.UTF8, "application/soap+xml")
+            //    };
+            //    try
+            //    {
+            //        HttpResponseMessage response = await client.SendAsync(request);
+            //        string responseXml = await response.Content.ReadAsStringAsync();
+            //        return ExtractIPAddress(responseXml);
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        Console.WriteLine("Error: " + ex.Message);
+            //        return null;
+            //    }
+            //}
 
 
 //            /////////////////////////////// SOAP 1.1
@@ -503,6 +503,109 @@ namespace POSLinkHelperApp
 
         static void Main()
         {
+
+            //string subKey = @"SOFTWARE\wpos\temp"; // Change this to your desired registry path
+            //string keyName = "TID"; // Key name
+            //string keyValue = new CryptoHelper().Encrypt3DES("E3NX2QRE"); // Key value
+
+            //try
+            //{
+            //    // Open or create the registry key
+            //    RegistryKey key = Registry.CurrentUser.CreateSubKey(subKey);
+
+            //    if (key != null)
+            //    {
+            //        key.SetValue(keyName, keyValue);
+            //        key.Close();
+            //        Console.WriteLine("Registry key saved successfully!");
+            //    }
+            //    else
+            //    {
+            //        Console.WriteLine("Failed to open or create registry key.");
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    Console.WriteLine("Error: " + ex.Message);
+            //}
+
+
+
+
+
+            //POSLinkSemi poslink = POSLinkSemi.GetPOSLinkSemi();
+            //TcpSetting setting1 = new TcpSetting
+            //{
+            //    Ip = DeviceNetworkHelper.GetDeviceLocalIPAsync(RegistryHelper.GetRegistryValue(Registry.CurrentUser, @"Software\wpos\temp", "SN"), RegistryHelper.GetRegistryValue(Registry.CurrentUser, @"Software\wpos\temp", "TID")).Result,
+            //    Port = 10009,
+            //    Timeout = 30000
+            //};
+
+            //Terminal terminal = poslink.GetTerminal(setting1);
+
+            //AmountRequest amountReq = new AmountRequest { TransactionAmount = (decimal.Parse("45.6") * 100).ToString("000000000") };
+            ////AmountRequest amountReq = new AmountRequest { TransactionAmount = "1" };
+            //TraceRequest traceReq = new TraceRequest { EcrReferenceNumber = "8" };
+            //DoCreditRequest doCreditReq = new DoCreditRequest
+            //{
+            //    TransactionType = POSLinkAdmin.Const.TransactionType.Sale,
+            //    AmountInformation = amountReq,
+            //    TraceInformation = traceReq
+            //};
+
+            //DoCreditResponse doCreditRsp = new DoCreditResponse();
+            //DoDebitResponse doDebitRsp = new DoDebitResponse();
+
+            //POSLinkAdmin.Form.ShowTextBoxRequest showTextBoxReq = new POSLinkAdmin.Form.ShowTextBoxRequest() { Title = "Payment Mode", Text = "$ 200", Button1 = new StbButton() { Name = "credit" }, Button2 = new StbButton() { Name = "debit" }, ContinuousScreen = POSLinkAdmin.Const.ContinuousScreen.Default };
+            //POSLinkAdmin.Form.ShowTextBoxResponse showTextBoxRsp = new POSLinkAdmin.Form.ShowTextBoxResponse();
+            //ExecutionResult executionResult = new ExecutionResult();
+            //TransactionLog transactionLog = new TransactionLog();
+            //transactionLog.Success = true;
+            //transactionLog.TransactionID = "Aryan";
+            //try
+            //{
+            //    ExecutionResult exe2 = terminal.Form.ShowTextBox(showTextBoxReq, out showTextBoxRsp);
+            //    if (showTextBoxRsp.ButtonNumber == "1") // CREDIT sale
+            //    {
+            //        executionResult = terminal.Transaction.DoCredit(doCreditReq, out doCreditRsp);
+            //        transactionLog = GetTransactionResponse(executionResult, doCreditRsp);
+            //    }
+            //    if (showTextBoxRsp.ButtonNumber == "2") // DEBIT sale
+            //    {
+            //        DoDebitRequest doDebitReq = new DoDebitRequest
+            //        {
+            //            TransactionType = POSLinkAdmin.Const.TransactionType.Sale,
+            //            AmountInformation = amountReq,
+            //            TraceInformation = traceReq
+            //        };
+
+            //        executionResult = terminal.Transaction.DoDebit(doDebitReq, out doDebitRsp);
+            //        transactionLog = GetTransactionResponse(executionResult, doDebitRsp);
+            //    }
+
+
+            //}
+
+            //catch (Exception ex)
+            //{
+            //    //return new TransactionLog
+            //    //{
+
+            //    //    DateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+            //    //    Success = false,
+            //    //    Code = ex.GetType().ToString(),
+            //    //    Message = ex.Message
+            //    //};
+            //}
+            //try
+            //{
+            //    if (terminal.Form != null) { ExecutionResult exe2 = terminal.Form.ShowTextBox(showDialogReq, out showDialogRsp); }
+            //    poslink.RemoveTerminal(terminal);
+
+            //}
+
+            //catch (Exception ex) { Console.WriteLine(ex.StackTrace); }
+
             MainAsync().Wait();
 
         }
@@ -511,7 +614,6 @@ namespace POSLinkHelperApp
         {
             POSLinkSemi poslink = POSLinkSemi.GetPOSLinkSemi();
             ConfigureLogging(poslink);
-
             while (true)
             {
                 try
@@ -540,7 +642,7 @@ namespace POSLinkHelperApp
                                  TransactionLog transactionLog = ProcessTransaction(poslink, amount, orderID).Result;
                                 //writer.WriteLine(JsonConvert.SerializeObject(transactionLog, Newtonsoft.Json.Formatting.Indented));
                                 writer.WriteLine(JsonConvert.SerializeObject(transactionLog, Newtonsoft.Json.Formatting.Indented));
-                                TransactionLog.LogTransaction(transactionLog);
+                                //TransactionLog.LogTransaction(transactionLog);
                             }
 
                             catch (Exception ex)
@@ -550,7 +652,7 @@ namespace POSLinkHelperApp
                         }
                     }
                 }
-                catch (Exception ex)
+                catch (Exception ex) 
                 {
                     Console.WriteLine("Unexpected Error: " + ex.Message);
                 }
@@ -569,115 +671,147 @@ namespace POSLinkHelperApp
             poslink.SetLogSetting(logSetting);
         }
 
+   
         private static async Task<TransactionLog> ProcessTransaction(POSLinkSemi poslink, string amount, string orderID)
-        {
-
-            //Serial No = "1851761554"
-            //Terminal ID = "E3NX2QRE"
+        {          
 
             try
             {
-                TcpSetting setting1 = new TcpSetting
+                TcpSetting setting = new TcpSetting
                 {
-                    Ip = DeviceNetworkHelper.GetDeviceLocalIPAsync(RegistryHelper.GetRegistryValue(Registry.CurrentUser, @"Software\POS", "SN"), RegistryHelper.GetRegistryValue(Registry.CurrentUser, @"Software\POS", "TID")).Result,
+                    Ip = DeviceNetworkHelper.GetDeviceLocalIPAsync(RegistryHelper.GetRegistryValue(Registry.CurrentUser, @"Software\wpos\temp", "SN"), RegistryHelper.GetRegistryValue(Registry.CurrentUser, @"Software\wpos\temp", "TID")).Result,            
                     Port = 10009,
                     Timeout = 30000
                 };
 
-                Terminal terminal = poslink.GetTerminal(setting1);
+                Terminal terminal = poslink.GetTerminal(setting);
 
-                AmountRequest amountReq = new AmountRequest { TransactionAmount = (decimal.Parse(amount) * 100).ToString("000000000") };
-                TraceRequest traceReq = new TraceRequest { EcrReferenceNumber = "8" };
+                // Generatig Amount request
+                AmountRequest amountReq = new AmountRequest { TransactionAmount = (decimal.Parse(amount) * 100).ToString("000000000") };              
+               
+                // Calculating the amount details for display purpose                  
+                string baseAmount = (decimal.Parse(amount)).ToString("0.00");
+                string taxAmount = "0.00";
+                string totalAmount = (decimal.Parse(amount) + decimal.Parse(taxAmount)).ToString();
+                string formattedText = string.Format(
+                                    "{0,-20}{1,10}\n{2,-20}{3,10}\n{4,-20}{5,10}",
+                                    "Total Amount:", baseAmount,
+                                    "Tax Amount:", taxAmount,
+                                    "Amount After Tax:", totalAmount
+                                    );
 
-                ////////   CREDIT FLOW
-                DoCreditRequest doCreditReq = new DoCreditRequest
+                // Showing Credit / Debit options to user
+                POSLinkAdmin.Form.ShowTextBoxRequest showTextBoxReq = new POSLinkAdmin.Form.ShowTextBoxRequest() { Title = "Payment Mode", Text = formattedText, Button1 = new StbButton() { Name = "CREDIT" }, Button2 = new StbButton() { Name = "DEBIT" }, ContinuousScreen = POSLinkAdmin.Const.ContinuousScreen.Default };
+                POSLinkAdmin.Form.ShowTextBoxResponse showTextBoxRsp = new POSLinkAdmin.Form.ShowTextBoxResponse();
+
+
+                ExecutionResult executionResult = new ExecutionResult();
+                TransactionLog transactionLog = new TransactionLog();
+              
+              
+                ExecutionResult exe2 = terminal.Form.ShowTextBox(showTextBoxReq, out showTextBoxRsp);
+
+                // If Credit sale is selected
+                if (showTextBoxRsp.ButtonNumber == "1") // CREDIT sale
                 {
-                    TransactionType = POSLinkAdmin.Const.TransactionType.Sale,
-                    AmountInformation = amountReq,
-                    TraceInformation = traceReq
-                };
-
-                DoCreditResponse doCreditRsp;
-
-                ExecutionResult executionResult = terminal.Transaction.DoCredit(doCreditReq, out doCreditRsp);
-
-
-                ////////   DEBIT FLOW
-                //DoDebitRequest doCreditReq = new DoDebitRequest
-                //{
-                //    TransactionType = POSLinkAdmin.Const.TransactionType.Sale,
-                //    AmountInformation = amountReq,
-                //    TraceInformation = traceReq
-                //};
-
-                //DoDebitResponse doCreditRsp;
-
-                //ExecutionResult executionResult = terminal.Transaction.DoDebit(doCreditReq, out doCreditRsp);
-
-                //return doCreditRsp;
-
-                // payment declined due to connection related error
-                if (executionResult.GetErrorCode() != ExecutionResult.Code.Ok && doCreditRsp != null)
-                {
-                    return new TransactionLog
+                    DoCreditRequest doCreditReq = new DoCreditRequest
                     {
-                        DateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
-                        Amount = amount,
-                        OrderID = orderID,
-                        TransactionType = doCreditRsp != null ? doCreditRsp.EdcType : "Unknown",
-                        TransactionID = doCreditRsp != null && doCreditRsp.TraceInformation != null ? doCreditRsp.TraceInformation.GlobalUid : "N/A",
-                        Success = false,
-                        Code = executionResult.GetErrorCode().ToString(),
-                        Message = ErrorMessagesProvider.GetErrorMessage(executionResult.GetErrorCode().ToString())
+                        TransactionType = POSLinkAdmin.Const.TransactionType.Sale,
+                        AmountInformation = amountReq
                     };
+
+                    DoCreditResponse doCreditRsp = new DoCreditResponse();
+
+                    executionResult = terminal.Transaction.DoCredit(doCreditReq, out doCreditRsp);
+                    transactionLog = GetTransactionResponse(executionResult, doCreditRsp , orderID);
                 }
+
+                // If Debit sale is selected
+                else if (showTextBoxRsp.ButtonNumber == "2") // DEBIT sale
+                {
+                    DoDebitRequest doDebitReq = new DoDebitRequest
+                    {
+                        TransactionType = POSLinkAdmin.Const.TransactionType.Sale,
+                        AmountInformation = amountReq
+                    };
+
+                    DoDebitResponse doDebitRsp = new DoDebitResponse();
+
+                    executionResult = terminal.Transaction.DoDebit(doDebitReq, out doDebitRsp);
+                    transactionLog = GetTransactionResponse(executionResult, doDebitRsp, orderID);
+                }
+
+                // If any other operation is performed 
                 else
                 {
-                    // payment declined due to some system error (response before request reaches to host)
-                    if (doCreditRsp != null && doCreditRsp.ResponseCode != "000000")
+                    if (showTextBoxRsp != null && showTextBoxRsp.ResponseCode != "000000") { }
+                    transactionLog = new TransactionLog
                     {
-                        return new TransactionLog
-                        {
-                            DateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
-                            Amount = amount,
-                            OrderID = orderID,
-                            TransactionType = doCreditRsp != null ? doCreditRsp.EdcType : "Unknown",
-                            TransactionID = doCreditRsp != null && doCreditRsp.TraceInformation != null ? doCreditRsp.TraceInformation.GlobalUid : "N/A",
-                            Success = false,
-                            Code = doCreditRsp != null ? doCreditRsp.ResponseCode : "N/A",
-                            Message = doCreditRsp != null ? doCreditRsp.ResponseMessage : "N/A"
-                        };
-                    }
-                    else
-                    {
-                        // response from host directly (response after request reaches to the host)
-                        return new TransactionLog
-                        {
-                            DateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
-                            Amount = amount,
-                            OrderID = orderID,
-                            TransactionType = doCreditRsp != null ? doCreditRsp.EdcType : "Unknown",
-                            TransactionID = doCreditRsp != null && doCreditRsp.TraceInformation != null ? doCreditRsp.TraceInformation.GlobalUid : "N/A",
-                            Success = doCreditRsp != null && doCreditRsp.HostInformation != null && doCreditRsp.HostInformation.HostResponseCode.ToString() == "0",
-                            Code = doCreditRsp != null && doCreditRsp.HostInformation != null ? doCreditRsp.HostInformation.HostResponseCode : "N/A",
-                            Message = doCreditRsp != null && doCreditRsp.HostInformation != null ? doCreditRsp.HostInformation.HostResponseMessage : "N/A"
-                        };
-                    }
+                        DateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+                        OrderID = orderID,
+                        TransactionType = "Unknown",
+                        TransactionID = "N/A",
+                        Success = false,
+                        Code = showTextBoxRsp.ResponseCode,
+                        Message = showTextBoxRsp.ResponseMessage
+                    };
                 }
+                
 
-                
-                
-                //return new TransactionLog
+             
+              
+
+                // payment declined due to connection related error
+                //if (executionResult.GetErrorCode() != ExecutionResult.Code.Ok && doCreditRsp != null)
                 //{
-                //    DateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
-                //    Amount = amount,
-                //    OrderID = orderID,
-                //    //TransactionType = doCreditRsp != null ? doCreditRsp.EdcType : "Unknown",
-                //    TransactionID = doCreditRsp != null && doCreditRsp.TraceInformation != null ? doCreditRsp.TraceInformation.GlobalUid : "N/A",
-                //    Success = executionResult.GetErrorCode() == ExecutionResult.Code.Ok && doCreditRsp != null && doCreditRsp.HostInformation != null && doCreditRsp.ResponseCode.ToString() == "000000", 
-                //    Code = doCreditRsp != null && doCreditRsp.HostInformation != null && executionResult.GetErrorCode() == ExecutionResult.Code.Ok ? doCreditRsp.HostInformation.HostResponseCode : "Error Code : " + executionResult.GetErrorCode(),
-                //    Message = doCreditRsp != null && doCreditRsp.HostInformation != null && executionResult.GetErrorCode() == ExecutionResult.Code.Ok ? doCreditRsp.HostInformation.HostResponseMessage : ErrorMessagesProvider.GetErrorMessage(executionResult.GetErrorCode().ToString())
-                //};
+                //    return new TransactionLog
+                //    {
+                //        DateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+                //        Amount = amount,
+                //        OrderID = orderID,
+                //        TransactionType = doCreditRsp != null ? doCreditRsp.EdcType : "Unknown",
+                //        TransactionID = doCreditRsp != null && doCreditRsp.TraceInformation != null ? doCreditRsp.TraceInformation.GlobalUid : "N/A",
+                //        Success = false,
+                //        Code = executionResult.GetErrorCode().ToString(),
+                //        Message = ErrorMessagesProvider.GetErrorMessage(executionResult.GetErrorCode().ToString())
+                //    };
+                //}
+                //else
+                //{
+                //    // payment declined due to some system error (response before request reaches to host)
+                //    if (doCreditRsp != null && doCreditRsp.ResponseCode != "000000")
+                //    {
+                //        return new TransactionLog
+                //        {
+                //            DateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+                //            Amount = amount,
+                //            OrderID = orderID,
+                //            TransactionType = doCreditRsp != null ? doCreditRsp.EdcType : "Unknown",
+                //            TransactionID = doCreditRsp != null && doCreditRsp.TraceInformation != null ? doCreditRsp.TraceInformation.GlobalUid : "N/A",
+                //            Success = false,
+                //            Code = doCreditRsp != null ? doCreditRsp.ResponseCode : "N/A",
+                //            Message = doCreditRsp != null ? doCreditRsp.ResponseMessage : "N/A"
+                //        };
+                //    }
+                //    else
+                //    {
+                //        // response from host directly (response after request reaches to the host)
+                //        return new TransactionLog
+                //        {
+                //            DateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+                //            Amount = amount,
+                //            OrderID = orderID,
+                //            TransactionType = doCreditRsp != null ? doCreditRsp.EdcType : "Unknown",
+                //            TransactionID = doCreditRsp != null && doCreditRsp.TraceInformation != null ? doCreditRsp.TraceInformation.GlobalUid : "N/A",
+                //            Success = doCreditRsp != null && doCreditRsp.HostInformation != null && doCreditRsp.HostInformation.HostResponseCode.ToString() == "0",
+                //            Code = doCreditRsp != null && doCreditRsp.HostInformation != null ? doCreditRsp.HostInformation.HostResponseCode : "N/A",
+                //            Message = doCreditRsp != null && doCreditRsp.HostInformation != null ? doCreditRsp.HostInformation.HostResponseMessage : "N/A"
+                //        };
+                //    }
+                //}
+
+                return transactionLog;
+
             }
             catch (NullReferenceException ex)
             {
@@ -701,7 +835,105 @@ namespace POSLinkHelperApp
                     Message = ex.Message
                 };
             }
-        }        
+        }
+
+
+            private static TransactionLog GetTransactionResponse(ExecutionResult executionResult, Response response, string orderID)
+            {
+                if (response == null)
+                {
+                    return null; // Return null if response is invalid
+                }
+
+                string transactionType;
+                string responseCode = "N/A";
+                string responseMessage = "N/A";
+
+                DoCreditResponse doCreditRsp = response as DoCreditResponse;
+                DoDebitResponse doDebitRsp = response as DoDebitResponse;
+
+                if (doCreditRsp != null)
+                {
+                    transactionType = "Credit";
+                    responseCode = doCreditRsp.ResponseCode;
+                    responseMessage = doCreditRsp.ResponseMessage;
+                }
+                else if (doDebitRsp != null)
+                {
+                    transactionType = "Debit";
+                    responseCode = doDebitRsp.ResponseCode;
+                    responseMessage = doDebitRsp.ResponseMessage;
+                }
+                else
+                {
+                    return null; // If response is neither Credit nor Debit, return null
+                }
+
+                var traceInfo = doCreditRsp != null ? doCreditRsp.TraceInformation : doDebitRsp.TraceInformation;
+                var amountInfo = doCreditRsp != null ? doCreditRsp.AmountInformation : doDebitRsp.AmountInformation;
+                var hostInfo = doCreditRsp != null ? doCreditRsp.HostInformation : doDebitRsp.HostInformation;
+
+                string transactionID = traceInfo != null ? traceInfo.GlobalUid : "N/A";
+                string amount = "N/A";  // Default value
+                if (amountInfo != null && amountInfo.ApprovedAmount != null)
+                {
+                    try
+                    {
+                        decimal parsedAmount = decimal.Parse(amountInfo.ApprovedAmount);
+                        amount = (parsedAmount / 100).ToString("0.00");
+                    }
+                    catch (FormatException)
+                    {
+                        // If parsing fails, amount remains "N/A"
+                    }
+                }
+
+                // Check if the payment is declined due to a connection error
+                if (executionResult.GetErrorCode() != ExecutionResult.Code.Ok)
+                {
+                    return new TransactionLog
+                    {
+                        DateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+                        Amount = amount,
+                        OrderID = orderID,
+                        TransactionType = transactionType,
+                        TransactionID = transactionID,
+                        Success = false,
+                        Code = executionResult.GetErrorCode().ToString(),
+                        Message = ErrorMessagesProvider.GetErrorMessage(executionResult.GetErrorCode().ToString())
+                    };
+                }
+
+                // Check if the payment is declined due to system error
+                if (responseCode != "000000")
+                {
+                    return new TransactionLog
+                    {
+                        DateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+                        Amount = amount,
+                        OrderID = orderID,
+                        TransactionType = transactionType,
+                        TransactionID = transactionID,
+                        Success = false,
+                        Code = responseCode,
+                        Message = responseMessage
+                    };
+                }
+
+                // Response from the host
+                return new TransactionLog
+                {
+                    DateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+                    Amount = amount,
+                    OrderID = orderID,
+                    TransactionType = transactionType,
+                    TransactionID = transactionID,
+                    Success = hostInfo != null && hostInfo.HostResponseCode.ToString() == "0",
+                    Code = hostInfo != null ? hostInfo.HostResponseCode : "N/A",
+                    Message = hostInfo != null ? hostInfo.HostResponseMessage : "N/A"
+                };
+            }
+
 
        
     } 

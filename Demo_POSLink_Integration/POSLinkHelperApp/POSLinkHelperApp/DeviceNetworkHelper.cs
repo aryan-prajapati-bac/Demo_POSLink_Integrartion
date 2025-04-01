@@ -27,6 +27,7 @@ namespace POSLinkHelperApp
                 + "</soap12:Body>"
                 + "</soap12:Envelope>";
 
+
             using (HttpClient client = new HttpClient())
             {
                 System.Net.Http.HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, POSLinkAPIUrl)
@@ -50,7 +51,7 @@ namespace POSLinkHelperApp
                     Console.WriteLine("Error: " + ex.Message);
                     return "IP not found";
                 }
-            }
+            }          
 
         }
 

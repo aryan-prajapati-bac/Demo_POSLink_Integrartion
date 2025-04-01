@@ -67,6 +67,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CryptoHelper.cs" />
     <Compile Include="DeviceNetworkHelper.cs" />
     <Compile Include="ErrorMessageProvider.cs" />
     <Compile Include="Program.cs" />
