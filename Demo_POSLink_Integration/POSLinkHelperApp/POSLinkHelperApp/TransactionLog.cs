@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -17,15 +18,28 @@ namespace POSLinkHelperApp
         public bool Success { get; set; }
         public string Code { get; set; }
         public string Message { get; set; }
-
+       
 
         public static void LogTransaction(TransactionLog transactionLog)
         {
             try
             {
-                string logPath = @"D:\Demo_POSLink_Integration\Demo_POSLink_Integrartion\TransactionLog.txt";
-                bool fileExists = File.Exists(logPath);
+                // Define log directory (one level outside the project folder)
+                string logDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "Logs", "Transaction Logs");
+                string fullPath = Path.GetFullPath(logDirectory); // Resolves relative path to absolute
 
+                // Ensure directory exists
+                if (!Directory.Exists(fullPath))
+                {
+                    Directory.CreateDirectory(fullPath);
+                }
+
+                // Generate log file name based on the current date
+                string logFileName = "TransactionLog_" + System.DateTime.UtcNow.ToString("yyyyMMdd") + ".txt";
+                string logPath = Path.Combine(fullPath, logFileName);
+
+                // Check if the file exists
+                bool fileExists = File.Exists(logPath);
 
                 using (StreamWriter writer = new StreamWriter(logPath, true))
                 {
@@ -36,7 +50,7 @@ namespace POSLinkHelperApp
                         writer.WriteLine("--------------------------------------------------------------------------------------------------------------------------");
                     }
 
-                    // Build log entry string efficiently using StringBuilder
+                    // Build log entry string using StringBuilder
                     var logEntry = new StringBuilder();
                     logEntry.AppendFormat("{0,-20} || {1,-16} || {2,-8} || {3,-7} || {4,-20} || {5,-7} || {6,-5} || {7,-20}",
                         transactionLog.DateTime, transactionLog.TransactionID ?? "N/A", transactionLog.OrderID ?? "N/A",
@@ -47,12 +61,14 @@ namespace POSLinkHelperApp
                     writer.WriteLine(logEntry.ToString());
                 }
 
-                Console.WriteLine("Transaction logged successfully.");
+                //Console.WriteLine("Transaction logged successfully.");
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error logging transaction: " + ex.Message);
+                //Console.WriteLine("Error logging transaction: " + ex.Message);
             }
         }
+
+
     }
 }

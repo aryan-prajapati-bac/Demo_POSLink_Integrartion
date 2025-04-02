@@ -1,0 +1,14 @@
+Time                 || Transaction ID   || Order ID  || Amount  || Transaction Type    || Success || Code  || Message               
+--------------------------------------------------------------------------------------------------------------------------
+2025-04-02 16:05:50  || 1851761554202504021558255685 || 444      || 1.00    || Credit               || No      || 100011 || DUP TRANSACTION     
+2025-04-02 16:07:04  || 1851761554202504021606515861 || 444      || 2.30    || Credit               || Yes     || 0     || DEMO APPROVED       
+2025-04-02 11:19:34  || N/A              || 444      || 0.00    || Unknown              || No      || 100002 || ABORTED             
+2025-04-02 11:49:33  || N/A              || 444      || 0.00    || Unknown              || No      || 100002 || ABORTED             
+2025-04-02 11:52:48  || 1851761554202504021722338186 || 444      || N/A     || Debit                || No      || 100003 || DEBIT ONLY, TRY ANOTHER TENDER
+2025-04-02 11:58:07  || N/A              || N/A      || 0.00    || Unknown              || No      || NullReferenceException || Terminal not found  
+2025-04-02 11:59:27  || N/A              || 444      || 0.00    || Unknown              || No      || N/A   || N/A                 
+2025-04-02 12:03:43  || N/A              || 444      || 0.00    || Unknown              || No      || 100003 || TIMEOUT INVALID     
+2025-04-02 12:04:04  || N/A              || 444      || 0.00    || Unknown              || No      || 100003 || TIMEOUT INVALID     
+2025-04-02 12:08:32  || N/A              || N/A      || 0.00    || Unknown              || No      || NullReferenceException || Terminal not found  
+2025-04-02 12:09:18  || N/A              || 444      || 0.00    || Unknown              || No      || 100001 || TIMEOUT             
+2025-04-02 12:10:00  || N/A              || 444      || 0.00    || Unknown              || No      || 100002 || ABORTED             

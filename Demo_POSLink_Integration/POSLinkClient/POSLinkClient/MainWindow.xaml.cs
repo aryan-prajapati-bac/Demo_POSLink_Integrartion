@@ -63,7 +63,7 @@ namespace POSLinkClient
                 }
                 catch (Exception ex)
                 {
-                    ResultTextBlock.Text = "An error occurred: " + ex.StackTrace;
+                    ResultTextBlock.Text = "An error occurred: " + ex.StackTrace + ex.Message;
                     if (process != null && !process.HasExited)
                     {
                         process.Kill(); // Sends a close request (like clicking 'X')
