@@ -14,7 +14,7 @@ namespace POSLinkHelperApp
     {
         public static string GetRegistryValue(RegistryKey baseKey, string subKeyPath, string valueName)
         {
-            using (RegistryKey key = baseKey.OpenSubKey(subKeyPath)) // Corrected declaration
+            using (RegistryKey key = baseKey.OpenSubKey(subKeyPath)) 
             {
                 if (key != null)
                 {

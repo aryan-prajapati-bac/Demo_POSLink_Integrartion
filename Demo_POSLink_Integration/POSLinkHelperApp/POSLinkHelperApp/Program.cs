@@ -500,8 +500,7 @@ namespace POSLinkHelperApp
     class Program
     {
 
-
-        static void Main()
+        public static void Main()
         {
 
             //string subKey = @"SOFTWARE\wpos\temp"; // Change this to your desired registry path
@@ -610,7 +609,7 @@ namespace POSLinkHelperApp
 
         }
 
-        static async Task MainAsync()
+        public static async Task MainAsync()
         {
             POSLinkSemi poslink = POSLinkSemi.GetPOSLinkSemi();
             ConfigureLogging(poslink);
@@ -639,8 +638,7 @@ namespace POSLinkHelperApp
                                     continue;
                                 }
 
-                                 TransactionLog transactionLog = ProcessTransaction(poslink, amount, orderID).Result;
-                                //writer.WriteLine(JsonConvert.SerializeObject(transactionLog, Newtonsoft.Json.Formatting.Indented));
+                                TransactionLog transactionLog = await ProcessTransaction(poslink, amount, orderID);
                                 writer.WriteLine(JsonConvert.SerializeObject(transactionLog, Newtonsoft.Json.Formatting.Indented));
                                 //TransactionLog.LogTransaction(transactionLog);
                             }
@@ -670,16 +668,15 @@ namespace POSLinkHelperApp
             };
             poslink.SetLogSetting(logSetting);
         }
-
    
         private static async Task<TransactionLog> ProcessTransaction(POSLinkSemi poslink, string amount, string orderID)
-        {          
+        {            
 
             try
             {
                 TcpSetting setting = new TcpSetting
                 {
-                    Ip = DeviceNetworkHelper.GetDeviceLocalIPAsync(RegistryHelper.GetRegistryValue(Registry.CurrentUser, @"Software\wpos\temp", "SN"), RegistryHelper.GetRegistryValue(Registry.CurrentUser, @"Software\wpos\temp", "TID")).Result,            
+                    Ip = await DeviceNetworkHelper.GetDeviceLocalIPAsync(RegistryHelper.GetRegistryValue(Registry.CurrentUser, @"Software\wpos\temp", "SN"), RegistryHelper.GetRegistryValue(Registry.CurrentUser, @"Software\wpos\temp", "TID")),            
                     Port = 10009,
                     Timeout = 30000
                 };
@@ -701,7 +698,7 @@ namespace POSLinkHelperApp
                                     );
 
                 // Showing Credit / Debit options to user
-                POSLinkAdmin.Form.ShowTextBoxRequest showTextBoxReq = new POSLinkAdmin.Form.ShowTextBoxRequest() { Title = "Payment Mode", Text = formattedText, Button1 = new StbButton() { Name = "CREDIT" }, Button2 = new StbButton() { Name = "DEBIT" }, ContinuousScreen = POSLinkAdmin.Const.ContinuousScreen.Default };
+                POSLinkAdmin.Form.ShowTextBoxRequest showTextBoxReq = new POSLinkAdmin.Form.ShowTextBoxRequest() { Title = "Payment Mode", Text = formattedText, Button1 = new StbButton() { Name = "CREDIT" }, Button2 = new StbButton() { Name = "DEBIT" }, ContinuousScreen = POSLinkAdmin.Const.ContinuousScreen.Default};
                 POSLinkAdmin.Form.ShowTextBoxResponse showTextBoxRsp = new POSLinkAdmin.Form.ShowTextBoxResponse();
 
 
@@ -739,7 +736,7 @@ namespace POSLinkHelperApp
 
                     executionResult = terminal.Transaction.DoDebit(doDebitReq, out doDebitRsp);
                     transactionLog = GetTransactionResponse(executionResult, doDebitRsp, orderID);
-                }
+                }                
 
                 // If any other operation is performed 
                 else
@@ -755,10 +752,7 @@ namespace POSLinkHelperApp
                         Code = showTextBoxRsp.ResponseCode,
                         Message = showTextBoxRsp.ResponseMessage
                     };
-                }
-                
-
-             
+                }             
               
 
                 // payment declined due to connection related error
@@ -837,90 +831,59 @@ namespace POSLinkHelperApp
             }
         }
 
-
-            private static TransactionLog GetTransactionResponse(ExecutionResult executionResult, Response response, string orderID)
+        private static TransactionLog GetTransactionResponse(ExecutionResult executionResult, Response response, string orderID)
+        {
+            if (response == null)
             {
-                if (response == null)
+                return null; // Return null if response is invalid
+            }
+
+            string transactionType;
+            string responseCode = "N/A";
+            string responseMessage = "N/A";
+
+            DoCreditResponse doCreditRsp = response as DoCreditResponse;
+            DoDebitResponse doDebitRsp = response as DoDebitResponse;
+
+            if (doCreditRsp != null)
+            {
+                transactionType = "Credit";
+                responseCode = doCreditRsp.ResponseCode;
+                responseMessage = doCreditRsp.ResponseMessage;
+            }
+            else if (doDebitRsp != null)
+            {
+                transactionType = "Debit";
+                responseCode = doDebitRsp.ResponseCode;
+                responseMessage = doDebitRsp.ResponseMessage;
+            }
+            else
+            {
+                return null; // If response is neither Credit nor Debit, return null
+            }
+
+            var traceInfo = doCreditRsp != null ? doCreditRsp.TraceInformation : doDebitRsp.TraceInformation;
+            var amountInfo = doCreditRsp != null ? doCreditRsp.AmountInformation : doDebitRsp.AmountInformation;
+            var hostInfo = doCreditRsp != null ? doCreditRsp.HostInformation : doDebitRsp.HostInformation;
+
+            string transactionID = traceInfo != null ? traceInfo.GlobalUid : "N/A";
+            string amount = "N/A";  // Default value
+            if (amountInfo != null && amountInfo.ApprovedAmount != null)
+            {
+                try
                 {
-                    return null; // Return null if response is invalid
+                    decimal parsedAmount = decimal.Parse(amountInfo.ApprovedAmount);
+                    amount = (parsedAmount / 100).ToString("0.00");
                 }
-
-                string transactionType;
-                string responseCode = "N/A";
-                string responseMessage = "N/A";
-
-                DoCreditResponse doCreditRsp = response as DoCreditResponse;
-                DoDebitResponse doDebitRsp = response as DoDebitResponse;
-
-                if (doCreditRsp != null)
+                catch (FormatException)
                 {
-                    transactionType = "Credit";
-                    responseCode = doCreditRsp.ResponseCode;
-                    responseMessage = doCreditRsp.ResponseMessage;
+                    // If parsing fails, amount remains "N/A"
                 }
-                else if (doDebitRsp != null)
-                {
-                    transactionType = "Debit";
-                    responseCode = doDebitRsp.ResponseCode;
-                    responseMessage = doDebitRsp.ResponseMessage;
-                }
-                else
-                {
-                    return null; // If response is neither Credit nor Debit, return null
-                }
+            }
 
-                var traceInfo = doCreditRsp != null ? doCreditRsp.TraceInformation : doDebitRsp.TraceInformation;
-                var amountInfo = doCreditRsp != null ? doCreditRsp.AmountInformation : doDebitRsp.AmountInformation;
-                var hostInfo = doCreditRsp != null ? doCreditRsp.HostInformation : doDebitRsp.HostInformation;
-
-                string transactionID = traceInfo != null ? traceInfo.GlobalUid : "N/A";
-                string amount = "N/A";  // Default value
-                if (amountInfo != null && amountInfo.ApprovedAmount != null)
-                {
-                    try
-                    {
-                        decimal parsedAmount = decimal.Parse(amountInfo.ApprovedAmount);
-                        amount = (parsedAmount / 100).ToString("0.00");
-                    }
-                    catch (FormatException)
-                    {
-                        // If parsing fails, amount remains "N/A"
-                    }
-                }
-
-                // Check if the payment is declined due to a connection error
-                if (executionResult.GetErrorCode() != ExecutionResult.Code.Ok)
-                {
-                    return new TransactionLog
-                    {
-                        DateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
-                        Amount = amount,
-                        OrderID = orderID,
-                        TransactionType = transactionType,
-                        TransactionID = transactionID,
-                        Success = false,
-                        Code = executionResult.GetErrorCode().ToString(),
-                        Message = ErrorMessagesProvider.GetErrorMessage(executionResult.GetErrorCode().ToString())
-                    };
-                }
-
-                // Check if the payment is declined due to system error
-                if (responseCode != "000000")
-                {
-                    return new TransactionLog
-                    {
-                        DateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
-                        Amount = amount,
-                        OrderID = orderID,
-                        TransactionType = transactionType,
-                        TransactionID = transactionID,
-                        Success = false,
-                        Code = responseCode,
-                        Message = responseMessage
-                    };
-                }
-
-                // Response from the host
+            // Check if the payment is declined due to a connection error
+            if (executionResult.GetErrorCode() != ExecutionResult.Code.Ok)
+            {
                 return new TransactionLog
                 {
                     DateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
@@ -928,12 +891,41 @@ namespace POSLinkHelperApp
                     OrderID = orderID,
                     TransactionType = transactionType,
                     TransactionID = transactionID,
-                    Success = hostInfo != null && hostInfo.HostResponseCode.ToString() == "0",
-                    Code = hostInfo != null ? hostInfo.HostResponseCode : "N/A",
-                    Message = hostInfo != null ? hostInfo.HostResponseMessage : "N/A"
+                    Success = false,
+                    Code = executionResult.GetErrorCode().ToString(),
+                    Message = ErrorMessagesProvider.GetErrorMessage(executionResult.GetErrorCode().ToString())
                 };
             }
 
+            // Check if the payment is declined due to system error
+            if (responseCode != "000000")
+            {
+                return new TransactionLog
+                {
+                    DateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+                    Amount = amount,
+                    OrderID = orderID,
+                    TransactionType = transactionType,
+                    TransactionID = transactionID,
+                    Success = false,
+                    Code = responseCode,
+                    Message = responseMessage
+                };
+            }
+
+            // Response from the host
+            return new TransactionLog
+            {
+                DateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+                Amount = amount,
+                OrderID = orderID,
+                TransactionType = transactionType,
+                TransactionID = transactionID,
+                Success = hostInfo != null && hostInfo.HostResponseCode.ToString() == "0",
+                Code = hostInfo != null ? hostInfo.HostResponseCode : "N/A",
+                Message = hostInfo != null ? hostInfo.HostResponseMessage : "N/A"
+            };
+        }
 
        
     } 
