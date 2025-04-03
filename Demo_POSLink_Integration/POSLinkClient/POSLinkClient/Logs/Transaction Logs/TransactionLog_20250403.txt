@@ -7,3 +7,14 @@ Time                 || Transaction ID   || Order ID  || Amount  || Transaction 
 2025-04-03 05:46:11  || N/A              || 444      || 0.00    || Unknown              || No      || 100002 || ABORTED             
 2025-04-03 05:47:48  || N/A              || 444      || 0.00    || Unknown              || No      || 100002 || ABORTED             
 2025-04-03 06:14:55  || N/A              || 444      || 0.00    || Unknown              || No      || 100002 || ABORTED             
+2025-04-03 06:43:54  || N/A              || 444      || 0.00    || Unknown              || No      || 100002 || ABORTED             
+2025-04-03 06:45:27  || N/A              || 444      || N/A     || Credit               || No      || 100002 || ABORTED             
+2025-04-03 06:45:46  || N/A              || 444      || N/A     || Debit                || No      || 100002 || ABORTED             
+2025-04-03 06:46:04  || N/A              || 444      || N/A     || Credit               || No      || 100002 || ABORTED             
+2025-04-03 06:46:40  || N/A              || 444      || N/A     || Debit                || No      || 100002 || ABORTED             
+2025-04-03 06:46:53  || N/A              || 444      || 0.00    || Unknown              || No      || 100002 || ABORTED             
+2025-04-03 06:47:13  || N/A              || 444      || 0.00    || Unknown              || No      || 100001 || TIMEOUT             
+2025-04-03 06:48:13  || 1851761554202504031218068941 || 444      || N/A     || Debit                || No      || 100003 || DEBIT ONLY, TRY ANOTHER TENDER
+2025-04-03 06:48:49  || 1851761554202504031218332699 || 444      || 12.36   || Credit               || Yes     || 0     || DEMO APPROVED       
+2025-04-03 06:54:40  || N/A              || 444      || 0.00    || Unknown              || No      || 100002 || ABORTED             
+2025-04-03 08:35:01  || N/A              || 444      || N/A     || Credit               || No      || 100002 || ABORTED             

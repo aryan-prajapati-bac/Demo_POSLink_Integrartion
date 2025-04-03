@@ -50,7 +50,7 @@ namespace POSLinkHelperApp
                         using (StreamWriter writer = new StreamWriter(pipeServer) { AutoFlush = true })
                         {
                             string amount = reader.ReadLine();
-                            string orderID = reader.ReadLine();
+                            string orderID = reader.ReadLine();                           
 
                             try
                             {
@@ -114,43 +114,31 @@ namespace POSLinkHelperApp
                 Terminal terminal = poslink.GetTerminal(setting);                             
                
                 // Calculating the amount details for display purpose                  
-                string baseAmount = (decimal.Parse(amount)).ToString("0.00");
-                string taxAmount = "0.00";
-                string totalAmount = (decimal.Parse(amount) + decimal.Parse(taxAmount)).ToString("0.00");
-                string formattedText = string.Format(
-                                    "{0,-20}{1,10}\n{2,-20}{3,10}\n{4,-20}{5,10}",
-                                    "Total Amount:", baseAmount,
-                                    "Tax Amount:", taxAmount,
-                                    "Amount After Tax:", totalAmount
-                                    );
+                //string baseAmount = (decimal.Parse(amount)).ToString("0.00");
+                //string taxAmount = "0.00";
+                //string totalAmount = (decimal.Parse(amount) + decimal.Parse(taxAmount)).ToString("0.00");
+                //string formattedText = string.Format(
+                //                    "{0,-20}{1,10}\n{2,-20}{3,10}\n{4,-20}{5,10}",
+                //                    "Total Amount:", baseAmount,
+                //                    "Tax Amount:", taxAmount,
+                //                    "Amount After Tax:", totalAmount
+                //                    );
 
 
                 // Generatig Amount request
-                AmountRequest amountReq = new AmountRequest { TransactionAmount = (decimal.Parse(totalAmount) * 100).ToString("000000000") };
+                AmountRequest amountReq = new AmountRequest { TransactionAmount = (decimal.Parse(amount) * 100).ToString("000000000") };
 
 
-                //POSLinkAdmin.Form.ShowDialogRequest showDialogReq = new POSLinkAdmin.Form.ShowDialogRequest() { Title = "Payment Mode", Button1 = new SdButton() { Name = "credit" }, Button2 = new SdButton() { Name = "debit" }, Button3 = new SdButton() { Name = "" }, Button4 = new SdButton() { Name = "" } };
-                //POSLinkAdmin.Form.ShowDialogResponse showDialogRsp = new POSLinkAdmin.Form.ShowDialogResponse(); // response
-
-                //try
-                //{
-                //    // execution result
-                //    ExecutionResult exe = terminal.Form.ShowDialog(showDialogReq, out showDialogRsp);
-
-                //}
-                //catch (Exception ex) { Console.WriteLine(ex.Message); }
-
-
-                // Showing Credit / Debit options to user
-                POSLinkAdmin.Form.ShowTextBoxRequest showTextBoxReq = new POSLinkAdmin.Form.ShowTextBoxRequest() { Title = "Payment Mode", Text = formattedText, Button1 = new StbButton() { Name = "CREDIT", Color = "323284" }, Button2 = new StbButton() { Name = "DEBIT", Color = "323284" }, Timeout = "200", ContinuousScreen = POSLinkAdmin.Const.ContinuousScreen.Default };
-                POSLinkAdmin.Form.ShowTextBoxResponse showTextBoxRsp = new POSLinkAdmin.Form.ShowTextBoxResponse();
+                // Dialogue box (Showing Credit/Debit options)
+                POSLinkAdmin.Form.ShowDialogRequest showTextBoxReq = new POSLinkAdmin.Form.ShowDialogRequest() { Title = "Payment Mode", Button1 = new SdButton() { Name = "CREDIT" }, Button2 = new SdButton() { Name = "DEBIT" }, Button3 = new SdButton() { Name = "" }, Button4 = new SdButton() { Name = "" }, Timeout = "100", ContinuousScreen = POSLinkAdmin.Const.ContinuousScreen.Default };
+                POSLinkAdmin.Form.ShowDialogResponse showTextBoxRsp = new POSLinkAdmin.Form.ShowDialogResponse();       
 
 
                 ExecutionResult executionResult = new ExecutionResult();
                 TransactionLog transactionLog = new TransactionLog();
               
               
-                ExecutionResult exe2 = terminal.Form.ShowTextBox(showTextBoxReq, out showTextBoxRsp);
+                ExecutionResult exe2 = terminal.Form.ShowDialog(showTextBoxReq, out showTextBoxRsp);
 
                 // If Credit sale is selected
                 if (showTextBoxRsp.ButtonNumber == "1") // CREDIT sale

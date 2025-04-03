@@ -18,5 +18,21 @@
                        TextWrapping="Wrap"
                        FontWeight="Bold"/>
         </StackPanel>
-    </Grid>
+        <StackPanel>
+            <TextBox x:Name="AmountTextBox1"
+                     Height="30"
+                     Margin="0,100,0,10"
+                     ToolTip="Enter Amount" />
+
+            <Button Content="Process Payment"
+                    Height="30"
+                    Click="ProcessPayment_Click1" />
+
+            <TextBlock x:Name="ResultTextBlock1"
+                       Margin="10"
+                       TextWrapping="Wrap"
+                       FontWeight="Bold"/>
+        </StackPanel>
+        
+    </Grid>   
 </Window>

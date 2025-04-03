@@ -77,6 +77,48 @@ namespace POSLinkClient
             }
         }
 
+        private void ProcessPayment_Click1(object sender, RoutedEventArgs e)
+        {
+            decimal amount;
+            if (decimal.TryParse(AmountTextBox.Text, out amount))
+            {
+                POSLinkClient1 client = new POSLinkClient1();
+                try
+                {
+                    string result = client.SendPaymentCommand(amount);
+                    ResultTextBlock.Text = result; // Display result
+
+                    if (process != null && !process.HasExited)
+                    {
+                        process.Kill(); // Sends a close request (like clicking 'X')
+                        process.WaitForExit(); // Waits for the process to exit
+                    }
+                }
+                catch (TimeoutException)
+                {
+                    ResultTextBlock.Text = "Connection timeout with the POS Helper Service.";
+                    if (process != null && !process.HasExited)
+                    {
+                        process.Kill(); // Sends a close request (like clicking 'X')
+                        process.WaitForExit(); // Waits for the process to exit
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ResultTextBlock.Text = "An error occurred: " + ex.StackTrace + ex.Message;
+                    if (process != null && !process.HasExited)
+                    {
+                        process.Kill(); // Sends a close request (like clicking 'X')
+                        process.WaitForExit(); // Waits for the process to exit
+                    }
+                }
+            }
+            else
+            {
+                ResultTextBlock.Text = "Please enter a valid amount.";
+            }
+        }
+
 
         //private void ProcessPayment_Click(object sender, RoutedEventArgs e)
         //{
